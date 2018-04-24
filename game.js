@@ -7,10 +7,12 @@ const BOARD_SIZE = 600;
 const CELL_SIZE = BOARD_SIZE / size;
 const CELL_SIZE_PX = String(CELL_SIZE) + "px";
 const ORD_LOWER_A = 97;
-const GRID_BORDER_STYLE = "silver 2px solid";
+// const GRID_BORDER_STYLE = "silver 2px solid";
 
 // Holds DOM elements that don’t change, to avoid repeatedly querying the DOM
 var dom = {};
+
+var selectedCellIds = new Set([]);
 
 // ================================================
 // EVENTS
@@ -29,6 +31,10 @@ Util.events(document, {
 		// Element refs
 		dom.controlColumn = Util.one("#controls"); // example
 
+		Util.one("#submit").onclick = function() {
+			console.log("submit")
+		}
+			//TODO
 	},
 
 	// Keyboard events arrive here
@@ -46,7 +52,7 @@ var createNewBoard = function(rows, cols, img, x, y) {
 
 	var sizeX = 550;
 	var sizeY = y / x * sizeX;
-	
+
 	var boardDiv = document.getElementById("boardDiv");
 	boardDiv.innerHTML = "";
 	boardDiv.style.gridTemplateColumns = "repeat(" + String(cols) + ", 1fr)";
@@ -63,21 +69,16 @@ var createNewBoard = function(rows, cols, img, x, y) {
 			cell.className = "cell";
 			cell.id = rowColToCell(r, c);
 
-			if (c == 0) {
-				cell.style.borderLeft = GRID_BORDER_STYLE;
-			}
-			if (c == cols - 1) {
-				cell.style.borderRight = GRID_BORDER_STYLE;
-			}
-			if (r == 0) {
-				cell.style.borderTop = GRID_BORDER_STYLE;
-			}
-			if (r == rows - 1) {
-				cell.style.borderBottom = GRID_BORDER_STYLE;
-			}
-
 			cell.addEventListener("click", function(evt) {
-			    cell.style.backgroundColor = "white";
+				if (selectedCellIds.has(cell.id)) {
+					selectedCellIds.delete(cell.id);
+					cell.style.backgroundColor = "transparent";
+					cell.style.opacity = "1";
+				} else {
+					selectedCellIds.add(cell.id);
+					cell.style.backgroundColor = "green";
+					cell.style.opacity = "0.25";
+				}
 			});
 
 			boardDiv.appendChild(cell);
@@ -87,4 +88,9 @@ var createNewBoard = function(rows, cols, img, x, y) {
 
 var rowColToCell = function(row, col) {
 	return row + "-" + col;
+}
+
+// Getting value of specific style property
+var findStyle = function(div, property) {
+	return getComputedStyle(div).getPropertyValue(property);
 }
