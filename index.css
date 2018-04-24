@@ -1,0 +1,21 @@
+body {
+	margin: auto;
+	text-align: center;
+	background-color: antiquewhite;
+}
+
+h1 {
+	font-family: Helvetica;
+	font-size: 40px;
+}
+
+h2 {
+	font-weight: normal;
+	margin: 5px;
+	color: gray;
+	font-size: 18px;
+}
+
+button {
+	margin: 20px;
+}

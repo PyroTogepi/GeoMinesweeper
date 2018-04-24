@@ -9,48 +9,13 @@ const CELL_SIZE_PX = String(CELL_SIZE) + "px";
 const ORD_LOWER_A = 97;
 // const GRID_BORDER_STYLE = "silver 2px solid";
 
-// Holds DOM elements that don’t change, to avoid repeatedly querying the DOM
-var dom = {};
-
 var selectedCellIds = new Set([]);
-
-// ================================================
-// EVENTS
-// ================================================
-
-// Attaching events on document because then we can do it without waiting for
-// the DOM to be ready (i.e. before DOMContentLoaded fires)
-Util.events(document, {
-	// Final initalization entry point: the Javascript code inside this block
-	// runs at the end of start-up when the DOM is ready
-	"DOMContentLoaded": function() {
-		var boardDiv = document.getElementById("boardDiv");
-		boardDiv.style.setProperty("--size", size);
-		createNewBoard(5,5,"level-2-original.png", 975, 975);
-
-		// Element refs
-		dom.controlColumn = Util.one("#controls"); // example
-
-		Util.one("#submit").onclick = function() {
-			console.log("submit")
-		}
-			//TODO
-	},
-
-	// Keyboard events arrive here
-	"keydown": function(evt) {
-	},
-
-	// Click events arrive here
-	"click": function(evt) {
-	}
-});
 
 // Creates new board
 var createNewBoard = function(rows, cols, img, x, y) {
 	var imgPath = "img/" + img;
 
-	var sizeX = 550;
+	var sizeX = BOARD_SIZE;
 	var sizeY = y / x * sizeX;
 
 	var boardDiv = document.getElementById("boardDiv");

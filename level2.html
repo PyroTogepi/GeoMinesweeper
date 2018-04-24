@@ -10,22 +10,35 @@
 
 <!-- Load style sheets -->
 <link rel="stylesheet" href="game.css">
-<link rel="stylesheet" href="index.css">
 
 <!-- Constructible EventTarget polyfill — Only Chrome 64+ supports constructible EventTarget objects natively -->
 <script src="https://unpkg.com/event-target@latest/min.js"></script>
 
 <script src="util.js"></script>
 <script src="game.js"></script>
+<script src="level2.js"></script>
 
 </head>
 
 <body>
-	<h1>Welcome to Geology Minesweeper!</h1>
-	<h2>Presented by:</h2>
-	<h2>Alex Torres, Claudia Chen, Janice Chui, Mae Dotan, Shavina Chau</h2>
-	<h2>MIT 11.127 Spring 2018</h2>
-	<a href="level2.html"><button>Start Playing!</button></a>
+	<div class="page-wrapper">
+		<side class="ui-head">
+			<h1>Geology Minesweeper Level 2</h1>
+			<div id="instructions">
+				<h2>Instructions</h2>
+
+			</div>
+			<a href=""><button>Previous Level</button></a>
+			<a href="level4.html"><button>Next Level</button></a>
+			<br>
+			<a href="index.html"><button>Home</button></a>
+		</side>
+
+		<main class="ui-board">
+		  <div class="board" id="boardDiv"></div>
+		  <button id="submit">Submit</button>
+		</main>
+	</div>
 </body>
 
 </html>
