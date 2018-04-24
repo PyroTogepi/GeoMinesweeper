@@ -3,7 +3,7 @@ const DEFAULT_BOARD_SIZE = 8;
 
 var size = DEFAULT_BOARD_SIZE;
 
-const BOARD_SIZE = 400;
+const BOARD_SIZE = 600;
 const CELL_SIZE = BOARD_SIZE / size;
 const CELL_SIZE_PX = String(CELL_SIZE) + "px";
 const ORD_LOWER_A = 97;
@@ -24,7 +24,7 @@ Util.events(document, {
 	"DOMContentLoaded": function() {
 		var boardDiv = document.getElementById("boardDiv");
 		boardDiv.style.setProperty("--size", size);
-		createNewBoard(10);
+		createNewBoard(5,5,"level-2-original.png", 975, 975);
 
 		// Element refs
 		dom.controlColumn = Util.one("#controls"); // example
@@ -41,31 +41,44 @@ Util.events(document, {
 });
 
 // Creates new board
-var createNewBoard = function(size) {
+var createNewBoard = function(rows, cols, img, x, y) {
+	var imgPath = "img/" + img;
+
+	var sizeX = 550;
+	var sizeY = y / x * sizeX;
+	
 	var boardDiv = document.getElementById("boardDiv");
 	boardDiv.innerHTML = "";
-	boardDiv.style.gridTemplateColumns = "repeat(" + String(size) + ", 1fr)";
+	boardDiv.style.gridTemplateColumns = "repeat(" + String(cols) + ", 1fr)";
+	boardDiv.style.backgroundImage = "url('" + imgPath + "')";
+	boardDiv.style.backgroundSize = sizeX + "px " + sizeY + "px";
+	boardDiv.style.width = sizeX + "px";
+	boardDiv.style.height = sizeY + "px";
 
 	// Create board element
-	for (var r = 0; r < size; r++) {
-		for (var c = 0; c < size; c++) {
+	for (var r = 0; r < rows; r++) {
+		for (var c = 0; c < cols; c++) {
 			// Create div cell to hold candies - cell is EMPTY
-			var cell = document.createElement("div");
+			const cell = document.createElement("div");
 			cell.className = "cell";
 			cell.id = rowColToCell(r, c);
 
 			if (c == 0) {
 				cell.style.borderLeft = GRID_BORDER_STYLE;
 			}
-			if (c == size - 1) {
+			if (c == cols - 1) {
 				cell.style.borderRight = GRID_BORDER_STYLE;
 			}
 			if (r == 0) {
 				cell.style.borderTop = GRID_BORDER_STYLE;
 			}
-			if (r == size - 1) {
+			if (r == rows - 1) {
 				cell.style.borderBottom = GRID_BORDER_STYLE;
 			}
+
+			cell.addEventListener("click", function(evt) {
+			    cell.style.backgroundColor = "white";
+			});
 
 			boardDiv.appendChild(cell);
 		}

@@ -17,17 +17,39 @@ html {
 }
 
 body {
-	margin: auto;
-	/*margin-top: 10px;*/
+	/*margin: auto;*/
+	margin-top: 10px;
 	width: 100%;
+	height: 100%;
 	padding-top: 10px;
 	font-family: Arial;
 }
 
+.page-wrapper {
+	display: grid;
+	grid-gap: 10px;
+	grid-template-columns: 1fr 2fr;
+	grid-template-areas: 
+	"header board";
+}
+
+.ui-head {
+	grid-area: header;
+}
+
+.ui-board {
+	grid-area: board;
+}
+
+h1 {
+	margin-top: 0;
+	text-align: center;
+}
+
 /* HEADER STYLES */
 
-header {
-	margin: auto;
+side {
+	/*margin: auto;*/
 	padding: 5px;
 	font-size: 18px;
 	color: #0A56D8;
@@ -46,7 +68,7 @@ main {
 .board {
 	/* Variables to use in creating the board */
 	--grid-color: silver;
-	--board-size: 400px;
+	/*--board-size: 400px;*/
 	--grid-gap: 1px;
 }
 
@@ -54,8 +76,8 @@ main {
 	display: grid;
 	align-items: center;
 	justify-items: center;
-	width: var(--board-size);
-	height: var(--board-size);
+	/*width: var(--board-size);*/
+	/*height: var(--board-size);*/
 	overflow: hidden;
 	border: silver 1px solid;
 }
@@ -66,22 +88,4 @@ main {
 	border-left: silver 1px solid;
 	width: 100%;
 	height: 100%;
-}
-
-/* RESPONSIVE LAYOUT */
-
-.wrapper {
-	display: grid;
-	grid-gap: 10px;
-	grid-template-columns: 1fr 2fr;
-	grid-template-areas: 
-	"header board";
-}
-
-.ui-head {
-	grid-area: header;
-}
-
-.ui-board {
-	grid-area: board;
 }
