@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title> Geology Minesweeper </title>
+
+<!-- Use mobile-aware viewport -->
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Load style sheets -->
+<link rel="stylesheet" href="game.css">
+<style type="text/css">
+
+	#boardDiv {
+		position: relative;
+	}
+	#correct-place {
+		/*background-color: red;*/
+		width: 44px; height: 15px;
+		border-radius: 20px;
+		position: absolute; top: 44px; left: 146px;
+	}
+	#message {
+		background-color: yellow;
+		display: none;
+	}
+	#hints {
+		display: none;
+		background-color: aquamarine;
+	}
+	.questions, #transition {
+		display: none;
+	}
+ </style>
+
+<!-- Constructible EventTarget polyfill — Only Chrome 64+ supports constructible EventTarget objects natively -->
+<script src="https://unpkg.com/event-target@latest/min.js"></script>
+
+<script src="util.js"></script>
+<script src="game.js"></script>
+<script src="train1A.js"></script>
+
+</head>
+
+<body>
+	<div class="page-wrapper">
+		<side class="ui-head">
+			<a href="index.html"><h1>Geology Minesweeper</h1></a>
+			<!-- <h2>Level 4</h2> -->
+			<a href="index.html"><button>Previous Level</button></a>
+			<a href="level2.html"><button>Next Level</button></a>
+			<div id="instructions">
+				<h2>Topographical Maps: Instructions</h2>
+				<p>The top map is a topographical map, below is the same region, in 3-D view.
+				In the topographical map, every line represents a specific height. 
+				</p>
+				<p>Based on your understanding of the lower map, click on the highest peak on the top map.
+				</p>
+			</div>
+			<div id="hints"><b>Hints!</b></div>
+		</side>
+
+		<main class="ui-board">
+		  <div class="board" id="boardDiv"></div>
+		  <!-- <button id="submit">Submit</button> -->
+		  <div id="message"></div>
+		  <button class="submit" id="transition" onclick="setUpQuestions()">Next</button>
+		  <div id="questions" class="questions">
+			  <div id="q2" class="question">
+			  	<span>Question: Every closed loop on the map represents one height. What is the height of the thicker line?</span>
+			  	<input type="number" class="text-input" id="q2-input"/>
+			  	<button class="submit" onclick="checkQ2()">Submit</button>
+			  	<span id="msg-q2"></span>
+			  </div>
+
+			  <div id="q3" class="question">
+			  	<span>Question: The height difference between 2 adjacent lines is 20 meters. What is the height of the highest peak?</span>
+			  	<input type="number" class="text-input" id="q3-input"/>
+			  	<button class="submit" onclick="checkQ3()">Submit</button>
+			  	<span id="msg-q3"></span>
+			  	<div id="hint-q3" class="hint"></div>
+			  </div>
+		  </div>
+
+
+		</main>
+	</div>
+</body>
+
+</html>

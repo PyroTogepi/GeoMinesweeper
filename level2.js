@@ -36,7 +36,7 @@ Util.events(document, {
 	}
 });
 
-
+/*
 var c = document.getElementById("canvas"),
 	w = innerWidth,
 	h = innerHeight;
@@ -133,4 +133,4 @@ function drawTiles(tiles) {
 	//tiles.forEach((d,i) => ctx.putImageData(d, d.x * i * 0.01, d.y * i * 0.01));
 	
 	//for efficiency in animation etc tiles should be converted to image object
-}
+}*/

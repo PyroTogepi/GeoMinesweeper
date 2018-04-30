@@ -11,7 +11,22 @@ const ORD_LOWER_A = 97;
 
 var selectedCellIds = new Set([]);
 
-// Creates new board
+function createImage(img, x, y, boardSize) {
+	var imgPath = "img/" + img;
+
+	var sizeX = boardSize == null ? BOARD_SIZE : boardSize;
+	var sizeY = y / x * sizeX;
+
+	var boardDiv = document.getElementById("boardDiv");
+	boardDiv.innerHTML = "";
+	boardDiv.style.backgroundImage = "url('" + imgPath + "')";
+	boardDiv.style.backgroundSize = sizeX + "px " + sizeY + "px";
+	boardDiv.style.width = sizeX + "px";
+	boardDiv.style.height = sizeY + "px";
+
+}
+
+// Creates new board, x and y are actual dimensions of image
 var createNewBoard = function(rows, cols, img, x, y) {
 	var imgPath = "img/" + img;
 
@@ -58,4 +73,9 @@ var rowColToCell = function(row, col) {
 // Getting value of specific style property
 var findStyle = function(div, property) {
 	return getComputedStyle(div).getPropertyValue(property);
+}
+
+// Displays element if display is true, otherwise hides it
+function display(eltId, display) {
+  Util.one(eltId).style.display = display ? "block" : "none";
 }
