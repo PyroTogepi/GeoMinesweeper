@@ -29,8 +29,9 @@
 		display: none;
 		background-color: aquamarine;
 	}
-	.questions, #transition {
-		display: none;
+
+	.text-input {
+		width: 50px;
 	}
  </style>
 
@@ -39,7 +40,7 @@
 
 <script src="util.js"></script>
 <script src="game.js"></script>
-<script src="train1A.js"></script>
+<script src="train2.js"></script>
 
 </head>
 
@@ -52,32 +53,68 @@
 			<a href="level2.html"><button>Next Level</button></a>
 			<div id="instructions">
 				<h2>Reading Coordinates: Instructions</h2>
-				<p>The 
+				<p>You need to be able to describe locations on the map using coordinates. Mt. Feeley is found at J3.
 				</p>
 			</div>
-			<div id="hints"><b>Hints!</b></div>
+			<div class="board" id="boardDiv"></div>
+			<!-- <div id="hints"><b>Hints!</b></div> -->
 		</side>
 
 		<main class="ui-board">
-		  <div class="board" id="boardDiv"></div>
 		  <!-- <button id="submit">Submit</button> -->
-		  <div id="message"></div>
-		  <button class="submit" id="transition" onclick="setUpQuestions()">Next</button>
+		  <!-- <div id="message"></div> -->
+		  <!-- <button class="submit" id="transition" onclick="setUpQuestions()">Next</button> -->
 		  <div id="questions" class="questions">
+			  <div id="q1" class="question">
+			  	<span>Question: Write down the coordinates of your home (example: A1).</span><br>
+			  	<input class="text-input" id="q1-input"/>
+			  	<button class="submit" onclick="checkQ1()">Submit</button>
+			  	<span id="msg-q1"></span>
+			  </div>
+
 			  <div id="q2" class="question">
-			  	<span>Question: Every closed loop on the map represents one height. What is the height of the thicker line?</span>
-			  	<input type="number" class="text-input" id="q2-input"/>
+			  	<span>Question: How far is Mt. Klopfer from your home? </span>
+			  	<input type="number" class="text-input" id="q2-input"/> km
 			  	<button class="submit" onclick="checkQ2()">Submit</button>
 			  	<span id="msg-q2"></span>
+			  	<div id="hint-q2" class="hint">Hint: Make sure you count from the center of your home square to the center of the Mt. Klopfer square.</div>
 			  </div>
 
 			  <div id="q3" class="question">
-			  	<span>Question: The height difference between 2 adjacent lines is 20 meters. What is the height of the highest peak?</span>
+			  	<span>Click on the mountain range that is 9 kilometers east, and 1 kilometer north from your home.</span>
 			  	<input type="number" class="text-input" id="q3-input"/>
 			  	<button class="submit" onclick="checkQ3()">Submit</button>
 			  	<span id="msg-q3"></span>
-			  	<div id="hint-q3" class="hint"></div>
 			  </div>
+
+  			  <div id="q4" class="question">
+			  	<span>Question: How many kilometers in each direction must you travel to reach Mt. Feeley from your home? You can only travel directly north, south, east, or west, and if there's a direction you don't need to travel, type in '0'. </span>
+			  	<br>
+			  	<input type="number" class="text-input" id="q4-input-N" placeholder="0"/> &degN&emsp;
+			  	<input type="number" class="text-input" id="q4-input-S" placeholder="0"/> &degS
+			  	<br>
+			  	<input type="number" class="text-input" id="q4-input-E" placeholder="0"/> &degE&emsp;
+			  	<input type="number" class="text-input" id="q4-input-W" placeholder="0"/> &degW
+			  	<br>
+			  	<button class="submit" onclick="checkQ4()">Submit</button>
+			  	<span id="msg-q4"></span>
+			  	<div id="hint-q4" class="hint">Hint: Make sure you count from the center of your home square to the center of the Mt. Klopfer square.</div>
+			  </div>
+
+			  <div id="q5" class="question">
+			  	<span>Challenge question: Which mountain is closer to your home?</span>
+				<form>
+				  <input type="radio" name="option" value="a">Mount Klopfer, by > 1 kilometer<br>
+				  <input type="radio" name="option" value="b" id="correct-q5">Mount Klopfer, by < 1 kilometer<br>
+				  <input type="radio" name="option" value="c">Mount Feeley, by > 1 kilometer<br>
+				  <input type="radio" name="option" value="d">Mount Feeley, by < 1 kilometer 
+				</form>
+			  	<button class="submit" onclick="checkQ5()">Submit</button>
+			  	<span id="msg-q5"></span>
+			  	<div id="hint-q5" class="hint">Hint: Use the Pythagorean theorem.</div>
+			  </div>
+
+
 		  </div>
 
 

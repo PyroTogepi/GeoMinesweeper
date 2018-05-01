@@ -39,7 +39,7 @@
 
 <script src="util.js"></script>
 <script src="game.js"></script>
-<script src="train1A.js"></script>
+<script src="train1.js"></script>
 
 </head>
 
@@ -55,8 +55,7 @@
 				<p>The top map is a topographical map, below is the same region, in 3-D view.
 				In the topographical map, every line represents a specific height. 
 				</p>
-				<p>Based on your understanding of the lower map, click on the highest peak on the top map.
-				</p>
+				
 			</div>
 			<div id="hints"><b>Hints!</b></div>
 		</side>
@@ -64,6 +63,7 @@
 		<main class="ui-board">
 		  <div class="board" id="boardDiv"></div>
 		  <!-- <button id="submit">Submit</button> -->
+		  <div id="q1" class="question" style="display: block">Based on your understanding of the lower map, click on the highest peak on the top map.</div>
 		  <div id="message"></div>
 		  <button class="submit" id="transition" onclick="setUpQuestions()">Next</button>
 		  <div id="questions" class="questions">
@@ -79,7 +79,10 @@
 			  	<input type="number" class="text-input" id="q3-input"/>
 			  	<button class="submit" onclick="checkQ3()">Submit</button>
 			  	<span id="msg-q3"></span>
-			  	<div id="hint-q3" class="hint"></div>
+			  	<div id="hint-q3" class="hint">
+			  		Hint: Here is more information about how to count the heights.
+			  		<img src="img/topo1B.png" style="width: 550px" />
+			  	</div>
 			  </div>
 		  </div>
 

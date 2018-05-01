@@ -58,21 +58,25 @@ Util.events(document, {
 	}
 });
 
-function showQ1Hint() {
-	var hints = Util.one("#hints");
-	var hint = document.createElement("div");
-	hint.classList.add("hint");
-	hint.style.display = "block";
-	hint.innerHTML = "Usually, the closer the lines are together in the topographical map, the steeper the peak.";
-	hints.appendChild(hint);
-	display("#hints", true);
-}
 
 function setUpQuestions() {
+	display("#q1", false);
 	display("#message", false);
 	display("#hints", false);
 	display("#transition", false);
 	display("#questions", true);
+}
+
+function checkQ2() {
+	var input = Util.one("#q2-input").value;
+	var msg = Util.one("#msg-q2");
+	if (input == 1440) {
+		msg.style.color = "green";
+		msg.innerHTML = "Correct!";
+	} else {
+		msg.style.color = "red";
+		msg.innerHTML = "Try again!";
+	}
 }
 
 function checkQ2() {
@@ -101,13 +105,12 @@ function checkQ3() {
 		msg.style.color = "red";
 		msg.innerHTML = "Try again!";
 		if (numTriesQ3 == 3) {
-			var hint = Util.one("#hint-q3");
-			hint.innerHTML = "Hint: Here is more information about how to count the heights.";
+			// var hint = Util.one("#hint-q3");
 
-			var img = document.createElement("img");
-			img.src = "img/topo1B.png";
-			img.style.width = "550px";
-			hint.appendChild(img);
+			// var img = document.createElement("img");
+			// img.src = "img/topo1B.png";
+			// img.style.width = "550px";
+			// hint.appendChild(img);
 			display("#hint-q3", true);
 		}
 
