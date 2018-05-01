@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title> Geology Minesweeper </title>
+
+	<!-- Use mobile-aware viewport -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Load style sheets -->
+	<link rel="stylesheet" href="game.css">
+	<style type="text/css">
+
+	#boardDiv {
+		position: relative;
+	}
+
+	.section-header {
+		margin-top: 0px;
+		margin-bottom: 2px;
+		text-align: center;
+		color: darkgoldenrod;
+		background-color: navy;
+		border-radius: 3px;
+		text-decoration: none;
+		padding: 3px;
+		font-size: 20px;
+	}
+
+	#correct-place {
+		/*background-color: red;*/
+		width: 44px; height: 15px;
+		border-radius: 20px;
+		position: absolute; top: 44px; left: 146px;
+	}
+	#message {
+		background-color: yellow;
+		display: none;
+	}
+	#hints {
+		display: none;
+		background-color: aquamarine;
+	}
+
+	.text-input {
+		width: 50px;
+	}
+	</style>
+
+	<!-- Constructible EventTarget polyfill — Only Chrome 64+ supports constructible EventTarget objects natively -->
+	<script src="https://unpkg.com/event-target@latest/min.js"></script>
+
+	<script src="util.js"></script>
+	<script src="game.js"></script>
+	<script src="gamelevel1.js"></script>
+
+</head>
+
+<body>
+	<div class="page-wrapper">
+		<side class="ui-head">
+			<a href="index.html"><h1>Geology Minesweeper</h1></a>
+			<!-- <h2>Level 4</h2> -->
+			<div id="instructions">
+				<h2 id="date"></h2>
+				<p>You inherited this plot of land from your father. Will you find enough gold to make your fortune?
+				</p>
+			</div>
+			<div class="board" id="boardDiv"></div>
+			<!-- <div id="hints"><b>Hints!</b></div> -->
+			<div id="resources" class="question">
+				<button>Notes from Dad</button>
+				<button>Maps</button>
+			</div>
+		</side>
+
+		<main class="ui-board">
+			<!-- <button id="submit">Submit</button> -->
+			<!-- <div id="message"></div> -->
+			<!-- <button class="submit" id="transition" onclick="setUpQuestions()">Next</button> -->
+			<div class="questions">
+				<div id="user-actions" class="question">
+					<h2 class="section-header">Look for Gold</h2>
+					<div style="display: flex;">
+						<div>
+							<h3>Location:</h3>
+							Where do you want to look for gold?<br>
+							<input class="text-input" id="coordinates"/>
+						</div>
+
+						<div>
+							<h3>Action:</h3>
+							<form>
+								<input type="radio" name="option" value="a">Pan for Gold<br>
+								<input type="radio" name="option" value="b">Mine for Gold<br>
+							</form>
+						</div>
+					</div>
+				</div>
+
+				<div id="buy-items" class="question">
+					<h2 class="section-header">General Store</h2>
+					<div id="purchase-list">
+						<h2>Prices:</h2>
+						<p>Mining tools: $50, permanent purchase</p>
+						<p>1 worker: $25 per month</p>
+					</div>
+					<button>Buy Mining Tools</button>
+					<button>Hire a worker</button>
+				</div>
+
+				<div id="next-month" class="question">
+					<h2 class="section-header">Current Status</h2>
+					<p>Inventory:</p><h3 id="inventory"></h3>
+					<p>Hired Workers:</p><h3 id="workers"></h3>
+					<h2 id="current-money">$0</h2><br>
+					<button>Start Next Month</button>
+				</div>
+			</div>
+
+
+		</main>
+	</div>
+</body>
+
+</html>
