@@ -3,6 +3,40 @@ var dom = {};
 
 var numClicks = 0;
 var boardSize = 500;
+
+// Month/years
+var months = ["January", "February","March","April","May","June",
+							"July","August","September","October","November","December"]
+var monthCounter=0;
+var yearCounter = 1847;
+
+// Variables that are used in the game
+var money = 0;
+var inventory = ["Gold Pan"];
+var workers = {};
+var goldPanCoordinates = {
+	"b2": 1,
+	"b3": 2,
+	"b5": 4,
+	"c5": 1,
+	"f3": 1,
+	"g5": 7,
+	"h1": 3,
+	"h2": 3,
+};
+
+var goldMineCoordinates = {
+	"a1": 5,
+	"b1": 5,
+	"c2": 30,
+	"d4": 5,
+	"f2": 2,
+	"g1": 2,
+	"g2": 20,
+	"g3": 10,
+	"h3": 10,
+};
+
 // ================================================
 // EVENTS
 // ================================================
@@ -17,17 +51,63 @@ Util.events(document, {
 		boardDiv.style.setProperty("--size", size);
 		createImage("tcolormap.png", 1860, 1292, boardSize);
 
-		var correctPlace = document.createElement("div");
-		correctPlace.id = "correct-place";
-		boardDiv.appendChild(correctPlace);
+		Util.one("#coordinates").focus();
+		Util.one("#inventory").innerHTML = "" + inventory[0];
 
-		// Element refs
-		dom.controlColumn = Util.one("#controls"); // example
+		// EVENT: input listens for change in input (typing, copy/paste, etc)
+		Util.one("#coordinates").addEventListener("input", function(event) {
+		  // check if current value is valid (in the form "a1", "h8", "j10", etc.)
+			// then change outline color to signify correct/incorrect
+			var currentInput = this.value;
+			var pattern = new RegExp(this.pattern);
+			if (pattern.test(currentInput)){
+			    this.setAttribute("style","outline-color: green;"); // green outline (as opposed to red)
+			}
+			else {
+			    this.setAttribute("style","outline-color: red;"); // red outline (as opposed to none)
+			}
+		});
 
-		// Util.one("#submit").onclick = function() {
-		// 	console.log("submit");
-		// }
-			//TODO
+		Util.one("#buy-mine").onclick = function() {
+			if (money >= 50 && inventory.indexOf("Gold Mining Tools") < 0){
+				// buy the tools, add to inventory
+				money -= 50;
+				inventory.push("Gold Mining Tools");
+				// refresh inventory text
+				var inventoryContents = "";
+				for (var i = 0; i < inventory.length; i++) {
+					inventoryContents += inventory[i] + ", ";
+				}
+				Util.one("#inventory").innerHTML = inventoryContents;
+			}
+
+		}
+
+		// EVENT: Completes all actions for the current month
+		//				Calculates earnings, subtracts spendings, moves forward 1 month
+		Util.one("#submit-month").onclick = function() {
+			console.log("submit");
+			var location = Util.one("#coordinates").value.toLowerCase();
+			var actionType;
+			if (Util.one("#pan").checked == true) {
+				actionType = "pan";
+			}
+			else if (Util.one("#mine").checked == true) {
+				actionType = "mine";
+			}
+
+			money += calculateEarnings(location, actionType);
+			console.log("You earned: $" + money);
+			Util.one("#current-money").innerHTML = "$" + money;
+
+			// increase time 1 month forward
+			if (monthCounter==11) { // aka December
+				yearCounter += 1;
+			}
+			monthCounter = (monthCounter+1) % 12;
+			Util.one("#date").innerHTML = ""+months[monthCounter]+" "+yearCounter;
+		}
+
 	},
 
 	// Keyboard events arrive here
@@ -39,98 +119,26 @@ Util.events(document, {
 	}
 });
 
-function checkQ1() {
-	var input = Util.one("#q1-input").value;
-	var msg = Util.one("#msg-q1");
-	if (input == "C7" || input == "c7") {
-		msg.style.color = "green";
-		msg.innerHTML = "Correct!";
-	} else {
-		msg.style.color = "red";
-		msg.innerHTML = "Try again!";
+
+function calculateEarnings(location, actionType) {
+	var mapToUse = goldPanCoordinates;
+	var earnings = 0;
+
+	// pick the map to use
+	if (actionType == "pan") {
+		mapToUse = goldPanCoordinates;
 	}
-}
-
-var numTriesQ2 = 0;
-function checkQ2() {
-	numTriesQ2++;
-	var input = Util.one("#q2-input").value;
-	var msg = Util.one("#msg-q2");
-	if (input == 1440) {
-		msg.style.color = "green";
-		msg.innerHTML = "Correct!";
-	} else {
-		msg.style.color = "red";
-		msg.innerHTML = "Try again!";
-		if (numTriesQ2 == 3) {
-			display("#hint-q2", true);
-		}
-
+	else if (actionType == "mine") {
+		mapToUse = goldMineCoordinates;
 	}
-}
 
-function checkQ3() {
-	numTriesQ3++;
-	var input = Util.one("#q3-input").value;
-	var msg = Util.one("#msg-q3");
-	if (input == 1540) {
-		msg.style.color = "green";
-		msg.innerHTML = "Correct!";
-	} else if (input <= 1560 && input >= 1520) {
-		msg.style.color = "red";
-		msg.innerHTML = "You’re close! Count again!";
-	} else {
-		msg.style.color = "red";
-		msg.innerHTML = "Try again!";
-		if (numTriesQ3 == 3) {
-			var hint = Util.one("#hint-q3");
-			hint.innerHTML = "Hint: Here is more information about how to count the heights.";
-
-			var img = document.createElement("img");
-			img.src = "img/topo1B.png";
-			img.style.width = "550px";
-			hint.appendChild(img);
-			display("#hint-q3", true);
-		}
-
+	// check how much gold is in that location
+	if (location in mapToUse) {
+		earnings = mapToUse[location];
 	}
-}
-
-var numTriesQ4 = 0;
-function checkQ4() {
-	numTriesQ4++;
-	var inputN = Util.one("#q4-input-N").value;
-	var inputS = Util.one("#q4-input-S").value;
-	var inputE = Util.one("#q4-input-E").value;
-	var inputW = Util.one("#q4-input-W").value;
-	var msg = Util.one("#msg-q4");
-	if (inputN == 4 && inputS == 0 && inputE == 7 && inputW == 0) {
-		msg.style.color = "green";
-		msg.innerHTML = "Correct!";
-	} else {
-		msg.style.color = "red";
-		msg.innerHTML = "Try again!";
-		if (numTriesQ4 == 3) {
-			display("#hint-q4", true);
-		}
-
+	else {
+		earnings = 0;
 	}
-}
 
-
-var numTriesQ5 = 0;
-function checkQ5() {
-	numTriesQ5++;
-	var msg = Util.one("#msg-q5");
-	if (Util.one("#correct-q5").checked) {
-		msg.style.color = "green";
-		msg.innerHTML = "Correct!";
-	} else {
-		msg.style.color = "red";
-		msg.innerHTML = "Try again!";
-		if (numTriesQ5 == 3) {
-			display("#hint-q5", true);
-		}
-
-	}
+	return earnings;
 }

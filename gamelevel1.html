@@ -63,14 +63,14 @@
 			<a href="index.html"><h1>Geology Minesweeper</h1></a>
 			<!-- <h2>Level 4</h2> -->
 			<div id="instructions">
-				<h2 id="date"></h2>
 				<p>You inherited this plot of land from your father. Will you find enough gold to make your fortune?
 				</p>
+				<h2 id="date">January 1847</h2>
 			</div>
 			<div class="board" id="boardDiv"></div>
 			<!-- <div id="hints"><b>Hints!</b></div> -->
 			<div id="resources" class="question">
-				<button>Notes from Dad</button>
+				<a href="notesfromdad.html" target="_blank"><button>Notes from Dad</button></a>
 				<button>Maps</button>
 			</div>
 		</side>
@@ -86,14 +86,14 @@
 						<div>
 							<h3>Location:</h3>
 							Where do you want to look for gold?<br>
-							<input class="text-input" id="coordinates"/>
+							<input class="text-input" id="coordinates" pattern="^[A-Ha-h]([1-5])$"/>
 						</div>
 
 						<div>
 							<h3>Action:</h3>
 							<form>
-								<input type="radio" name="option" value="a">Pan for Gold<br>
-								<input type="radio" name="option" value="b">Mine for Gold<br>
+								<input type="radio" name="option" id="pan" checked>Pan for Gold<br>
+								<input type="radio" name="option" id="mine">Mine for Gold<br>
 							</form>
 						</div>
 					</div>
@@ -106,16 +106,16 @@
 						<p>Mining tools: $50, permanent purchase</p>
 						<p>1 worker: $25 per month</p>
 					</div>
-					<button>Buy Mining Tools</button>
-					<button>Hire a worker</button>
+					<button id="buy-mine">Buy Mining Tools</button>
+					<button id="buy-worker">Hire a worker</button>
 				</div>
 
 				<div id="next-month" class="question">
 					<h2 class="section-header">Current Status</h2>
 					<p>Inventory:</p><h3 id="inventory"></h3>
-					<p>Hired Workers:</p><h3 id="workers"></h3>
-					<h2 id="current-money">$0</h2><br>
-					<button>Start Next Month</button>
+					<p>Hired Workers:</p><h3 id="workers">None</h3>
+					<p>Money:</p><h2 id="current-money">$0</h2>
+					<button id="submit-month">Start Next Month</button>
 				</div>
 			</div>
 
