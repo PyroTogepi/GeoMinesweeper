@@ -37,6 +37,11 @@
 		font-size: 20px;
 	}
 
+	button:disabled {
+		background-color: grey;
+		color: white;
+	}
+
 	#correct-place {
 		/*background-color: red;*/
 		width: 44px; height: 15px;
@@ -83,7 +88,7 @@
 			<div id="instructions">
 				<p>You inherited this plot of land from your father. Will you find enough gold to make your fortune?
 				</p>
-				<h2 id="date">January 1847</h2>
+				<h2 id="date">January 1848</h2>
 			</div>
 			<div class="board" id="boardDiv"></div>
 			<!-- <div id="hints"><b>Hints!</b></div> -->
@@ -100,18 +105,18 @@
 			<div class="questions">
 				<div id="user-actions" class="question">
 					<h2 class="section-header">Look for Gold</h2>
-					<div style="display: flex;">
-						<div>
+					<div class="location-action" style="display: flex;">
+						<div class="location">
 							<h3>Location:</h3>
 							Where do you want to look for gold?<br>
-							<input class="text-input" id="coordinates" pattern="^[A-Ha-h]([1-5])$"/>
+							<input class="text-input coordinates" id="coordinates" pattern="^[A-Ha-h]([1-5])$"/>
 						</div>
 
-						<div>
+						<div class="action">
 							<h3>Action:</h3>
 							<form>
-								<input type="radio" name="option" id="pan" checked>Pan for Gold<br>
-								<input type="radio" name="option" id="mine">Mine for Gold<br>
+								<input type="radio" name="option" class="action-pan" checked>Pan for Gold (River)<br>
+								<input type="radio" name="option" class="action-mine" disabled>Mine for Gold (Rock)<br>
 							</form>
 						</div>
 					</div>
@@ -121,7 +126,7 @@
 					<h2 class="section-header">General Store</h2>
 					<div id="purchase-list">
 						<h2>Prices:</h2>
-						<p>Mining tools: $50, permanent purchase</p>
+						<p>Hard Rock Mining Tools: $50, permanent purchase</p>
 						<p>1 worker: $25 per month</p>
 					</div>
 					<button id="buy-mine">Buy Mining Tools</button>
@@ -131,7 +136,7 @@
 				<div id="next-month" class="question">
 					<h2 class="section-header">Current Status</h2>
 					<p>Inventory:</p><h3 id="inventory"></h3>
-					<p>Hired Workers:</p><h3 id="workers">None</h3>
+					<p>Hired Workers:</p><h3 id="num-workers">None</h3>
 					<p>Money:</p><h2 id="current-money">$0</h2>
 					<button id="submit-month">Start Next Month</button>
 				</div>
