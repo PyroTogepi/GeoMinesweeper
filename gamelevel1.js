@@ -139,12 +139,14 @@ Util.events(document, {
 				earnings.push([location, actionType, profit]);
 			}
 			lastMonth = earnings;
+			console.log(lastMonth);
 
 			// display new money amount
 			console.log("You earned: $" + money);
 			Util.one("#current-money").innerHTML = "$" + money;
 			// display the last month log (breakdown of location/action/profit)
 			var lastMonthDiv = Util.one("#last-month");
+			lastMonthDiv.innerHTML = "";
 			for (i of lastMonth) {
 				// i = [location, actionType, profit]
 				var line = document.createElement("p");
