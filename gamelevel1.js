@@ -84,6 +84,7 @@ Util.events(document, {
 					inventoryContents += inventory[i] + ", ";
 				}
 				Util.one("#inventory").innerHTML = inventoryContents;
+				Util.one("#current-money").innerHTML="$"+money;
 
 				// enable all "Mine for Gold" options
 				var mineOptions = Util.all(".action-mine");
@@ -105,6 +106,7 @@ Util.events(document, {
 				money -= 25;
 				numWorkers += 1;
 				Util.one("#num-workers").innerHTML = ""+numWorkers;
+				Util.one("#current-money").innerHTML="$"+money;
 
 				// add a new location/action selector
 				var outerDiv = Util.one("#user-actions");
@@ -145,6 +147,7 @@ Util.events(document, {
 			Util.one("#current-money").innerHTML = "$" + money;
 			// display the last month log (breakdown of location/action/profit)
 			var lastMonthDiv = Util.one("#last-month");
+			lastMonthDiv.innerHTML = "";
 			for (i of lastMonth) {
 				// i = [location, actionType, profit]
 				var line = document.createElement("p");
@@ -153,9 +156,6 @@ Util.events(document, {
 			}
 			// reset location coordinate input, refocus
 			var coordInput = Util.all(".coordinates");
-			for (i of coordInput) {
-				i.value = "";
-			}
 			Util.one("#coordinates").focus();
 
 			// reset number of workers hired
