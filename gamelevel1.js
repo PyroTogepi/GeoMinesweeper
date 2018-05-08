@@ -176,7 +176,23 @@ Util.events(document, {
 			Util.one("#date").innerHTML = ""+months[monthCounter]+" "+yearCounter;
 		}
 
+		Util.one("#maps-button").onclick = function() {
+			Util.one("#map-popup").style.display = "block";
+		}
+
+
+	    window.onclick = function(event) {
+	    	console.log(event)
+	      var mapPopup = Util.one("#map-popup");
+	      if (event.target == mapPopup) {
+	        mapPopup.style.display = "none";
+	      }
+	    }
+
+
 	},
+
+
 
 	// Keyboard events arrive here
 	"keydown": function(evt) {
@@ -184,6 +200,7 @@ Util.events(document, {
 
 	// Click events arrive here
 	"click": function(evt) {
+
 	}
 });
 
