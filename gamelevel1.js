@@ -14,6 +14,7 @@ var yearCounter = 1848;
 var money = 0;
 var inventory = ["Gold Pan"];
 var numWorkers = 0;
+var lastMonthLog = [];
 var goldPanCoordinates = {
 	"b2": 1,
 	"b3": 2,
@@ -118,6 +119,8 @@ Util.events(document, {
 		// EVENT: Completes all actions for the current month
 		//				Calculates earnings, subtracts spendings, moves forward 1 month
 		Util.one("#submit-month").onclick = function() {
+			var earnings = []; // keep track of [location, action, money] to display later
+
 			// find location/action for you and each hired worker (if any), calulate earnings
 			var allWorkers = Util.all(".location-action");
 			for (i of allWorkers) {
@@ -130,12 +133,24 @@ Util.events(document, {
 				else if (actionDiv.querySelector(".action-mine").checked == true) {
 					actionType = "mine";
 				}
+				var profit = calculateEarnings(location, actionType)
+				money += profit;
 
-				money += calculateEarnings(location, actionType);
+				earnings.push([location, actionType, profit]);
 			}
+			lastMonth = earnings;
+
+			// display new money amount
 			console.log("You earned: $" + money);
 			Util.one("#current-money").innerHTML = "$" + money;
-
+			// display the last month log (breakdown of location/action/profit)
+			var lastMonthDiv = Util.one("#last-month");
+			for (i of lastMonth) {
+				// i = [location, actionType, profit]
+				var line = document.createElement("p");
+				line.innerHTML = "$" + i[2] + " from location " + i[0] + " using " + i[1];
+				lastMonthDiv.appendChild(line);
+			}
 			// reset location coordinate input, refocus
 			var coordInput = Util.all(".coordinates");
 			for (i of coordInput) {
