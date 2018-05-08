@@ -14,6 +14,12 @@
 
 	body {
 		margin:0;
+		padding: 0;
+	}
+
+	div {
+		margin: 2px;
+		padding: 2px;
 	}
 
 	.page-wrapper {
@@ -57,6 +63,16 @@
 		background-color: aquamarine;
 	}
 
+	#next-month-content {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+	}
+
+	#last-month {
+		height: 50px;
+		/*overflow-y: scroll;*/
+	}
+
 	.text-input {
 		width: 50px;
 	}
@@ -88,7 +104,6 @@
 			<div id="instructions">
 				<p>You inherited this plot of land from your father. Will you find enough gold to make your fortune?
 				</p>
-				<h2 id="date">January 1848</h2>
 			</div>
 			<div class="board" id="boardDiv"></div>
 			<!-- <div id="hints"><b>Hints!</b></div> -->
@@ -135,11 +150,19 @@
 
 				<div id="next-month" class="question">
 					<h2 class="section-header">Current Status</h2>
-					<p>Inventory:</p><h3 id="inventory"></h3>
-					<p>Hired Workers:</p><h3 id="num-workers">None</h3>
-					<p>Money:</p><h2 id="current-money">$0</h2>
-					<p>Last Month:</p><div id="last-month"></div>
-					<button id="submit-month">Start Next Month</button>
+					<div id="next-month-content">
+						<div id="status-time">				
+							<h2 id="date">January 1848</h2>	
+							<p>Last Month:</p><div id="last-month"></div>
+							<button id="submit-month">Start Next Month</button></div>
+						<div id="status-information">
+							<p>Inventory:</p><h3 id="inventory"></h3>
+							<p>Hired Workers:</p><h3 id="num-workers">None</h3>
+							<p>Money:</p><h2 id="current-money">$0</h2>
+
+						</div>
+					</div>
+
 				</div>
 			</div>
 
