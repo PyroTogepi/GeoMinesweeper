@@ -72,52 +72,6 @@ Util.events(document, {
 			});
 		}
 
-		// Button - buying mining tools
-		Util.one("#buy-mine").onclick = function() {
-			if (money >= 50 && inventory.indexOf("Rock Mining Tools") < 0){
-				// buy the tools, add to inventory
-				money -= 50;
-				inventory.push("Rock Mining Tools");
-				// refresh inventory text
-				var inventoryContents = "";
-				for (var i = 0; i < inventory.length; i++) {
-					inventoryContents += inventory[i] + ", ";
-				}
-				Util.one("#inventory").innerHTML = inventoryContents;
-				Util.one("#current-money").innerHTML="$"+money;
-
-				// enable all "Mine for Gold" options
-				var mineOptions = Util.all(".action-mine");
-				for (i of mineOptions) {
-					i.disabled = false;
-				}
-
-				// disable buy mining tools button
-				this.disabled = true;
-			}
-
-		}
-
-		// Button - hire a worker
-		// adds a new location/action selector for each worker hired
-		Util.one("#buy-worker").onclick = function() {
-			if (money >= 25){
-				// hire worker, update page
-				money -= 25;
-				numWorkers += 1;
-				Util.one("#num-workers").innerHTML = ""+numWorkers;
-				Util.one("#current-money").innerHTML="$"+money;
-
-				// add a new location/action selector
-				var outerDiv = Util.one("#user-actions");
-				var selection = outerDiv.querySelector(".location-action").cloneNode(true);
-				selection.classList.add("worker-actions");
-				selection.querySelector(".location").children[0].innerHTML = "Worker Location:";
-				outerDiv.append(selection);
-			}
-
-		}
-
 		// EVENT: Completes all actions for the current month
 		//				Calculates earnings, subtracts spendings, moves forward 1 month
 		Util.one("#submit-month").onclick = function() {
@@ -176,23 +130,8 @@ Util.events(document, {
 			Util.one("#date").innerHTML = ""+months[monthCounter]+" "+yearCounter;
 		}
 
-		Util.one("#maps-button").onclick = function() {
-			Util.one("#map-popup").style.display = "block";
-		}
-
-		Util.one("#map-popup-close").onclick = function() {
-			Util.one("#map-popup").style.display = "none";
-		}
-
-	    window.onclick = function(event) {
-	    	console.log(event)
-	      var mapPopup = Util.one("#map-popup");
-	      if (event.target == mapPopup) {
-	        mapPopup.style.display = "none";
-	      }
-	    }
-
-
+		setUpGeneralStore();
+		setUpPopups();
 	},
 
 
@@ -206,6 +145,85 @@ Util.events(document, {
 
 	}
 });
+
+function setUpGeneralStore() {
+		// Button - buying mining tools
+	Util.one("#buy-mine").onclick = function() {
+		if (money >= 50 && inventory.indexOf("Rock Mining Tools") < 0){
+			// buy the tools, add to inventory
+			money -= 50;
+			inventory.push("Rock Mining Tools");
+			// refresh inventory text
+			var inventoryContents = "";
+			for (var i = 0; i < inventory.length; i++) {
+				inventoryContents += inventory[i] + ", ";
+			}
+			Util.one("#inventory").innerHTML = inventoryContents;
+			Util.one("#current-money").innerHTML="$"+money;
+
+			// enable all "Mine for Gold" options
+			var mineOptions = Util.all(".action-mine");
+			for (i of mineOptions) {
+				i.disabled = false;
+			}
+
+			// disable buy mining tools button
+			this.disabled = true;
+		}
+
+	}
+
+	// Button - hire a worker
+	// adds a new location/action selector for each worker hired
+	Util.one("#buy-worker").onclick = function() {
+		if (money >= 25){
+			// hire worker, update page
+			money -= 25;
+			numWorkers += 1;
+			Util.one("#num-workers").innerHTML = ""+numWorkers;
+			Util.one("#current-money").innerHTML="$"+money;
+
+			// add a new location/action selector
+			var outerDiv = Util.one("#user-actions");
+			var selection = outerDiv.querySelector(".location-action").cloneNode(true);
+			selection.classList.add("worker-actions");
+			selection.querySelector(".location").children[0].innerHTML = "Worker Location:";
+			outerDiv.append(selection);
+		}
+
+	}
+}
+
+
+function setUpPopups() {
+
+	Util.one("#maps-button").onclick = function() {
+		Util.one("#map-popup").style.display = "block";
+	}
+
+	Util.one("#map-popup-close").onclick = function() {
+		Util.one("#map-popup").style.display = "none";
+	}
+
+	Util.one("#view-store-button").onclick = function() {
+		Util.one("#store-popup").style.display = "block";
+	}
+
+	Util.one("#store-popup-close").onclick = function() {
+		Util.one("#store-popup").style.display = "none";
+	}
+
+    window.onclick = function(event) {
+    	console.log(event)
+      var mapPopup = Util.one("#map-popup");
+      if (event.target == mapPopup) {
+        mapPopup.style.display = "none";
+      } else if (event.target == Util.one("#store-popup")) {
+      	Util.one("#store-popup").style.display = "none";
+      }
+    }
+
+}
 
 
 function calculateEarnings(location, actionType) {
