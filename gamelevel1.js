@@ -180,6 +180,9 @@ Util.events(document, {
 			Util.one("#map-popup").style.display = "block";
 		}
 
+		Util.one("#map-popup-close").onclick = function() {
+			Util.one("#map-popup").style.display = "none";
+		}
 
 	    window.onclick = function(event) {
 	    	console.log(event)
