@@ -56,7 +56,7 @@ button:disabled {
 
 #last-month {
 	height: 50px;
-	/*overflow-y: scroll;*/
+	overflow-y: scroll;
 }
 
 #store-popup {
@@ -90,9 +90,14 @@ button:disabled {
 	width: 50px;
 }
 
-h2, h3, p {
+h2, h3 {
 	margin-top: 10px;
 	margin-bottom: 10px;
+}
+
+p {
+	margin-top: 5px;
+	margin-bottom: 5px
 }
 
 button {

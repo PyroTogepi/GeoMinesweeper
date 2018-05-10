@@ -115,7 +115,7 @@ Util.events(document, {
 	"DOMContentLoaded": function() {
 		var boardDiv = document.getElementById("boardDiv");
 		boardDiv.style.setProperty("--size", size);
-		createImage("tcolormap.png", 1860, 1292, boardSize);
+		// createImage("tcolormap.png", 1860, 1292, boardSize);
 
 		Util.one("#coordinates").focus();
 		Util.one("#inventory").innerHTML = "" + inventory[0];
@@ -123,6 +123,8 @@ Util.events(document, {
 		populateStoreLegend();
 		setUpGeneralStore();
 		setUpPopups();
+
+		Util.one("#storyboard-popup").style.display = "block";
 
 		// EVENT: input listens for change in input (typing, copy/paste, etc)
 		var coordInput = Util.all(".coordinates");
@@ -307,13 +309,13 @@ function setUpGeneralStore() {
 
 function setUpPopups() {
 
-	Util.one("#maps-button").onclick = function() {
-		Util.one("#map-popup").style.display = "block";
-	}
+	// Util.one("#maps-button").onclick = function() {
+	// 	Util.one("#map-popup").style.display = "block";
+	// }
 
-	Util.one("#map-popup-close").onclick = function() {
-		Util.one("#map-popup").style.display = "none";
-	}
+	// Util.one("#map-popup-close").onclick = function() {
+	// 	Util.one("#map-popup").style.display = "none";
+	// }
 
 	Util.one("#view-store-button").onclick = function() {
 		Util.one("#store-popup").style.display = "block";

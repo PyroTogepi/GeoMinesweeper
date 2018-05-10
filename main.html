@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title> Geology Minesweeper </title>
+
+	<!-- Use mobile-aware viewport -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Load style sheets -->
+	<link rel="stylesheet" href="game.css">
+	<link rel="stylesheet" href="gamelevel1.css">
+
+	<!-- Constructible EventTarget polyfill — Only Chrome 64+ supports constructible EventTarget objects natively -->
+	<script src="https://unpkg.com/event-target@latest/min.js"></script>
+
+	<script src="util.js"></script>
+	<script src="game.js"></script>
+	<script src="gamelevel1.js"></script>
+
+</head>
+
+<body>
+	<div class="page-wrapper">
+		<side class="ui-head">
+			<a href="index.html"><h1>Geology Minesweeper</h1></a>
+			<!-- <h2>Level 4</h2> -->
+			<div id="instructions">
+				<p>You inherited this plot of land from your father. Will you find enough gold to make your fortune?
+				</p>
+			</div>
+			<div class="board" id="boardDiv">
+				<img src="img/tcolormap.png" style="width: 500px">
+			</div>
+		</side>
+
+		<main class="ui-board">
+			<div class="questions">
+				<div id="next-month" class="question">
+					<h2 class="section-header">Current Status</h2>
+					<div id="next-month-content">
+						<div id="status-time">				
+							<h2 id="date">January 1848</h2>	
+							<p>Last Month:</p><div id="last-month"></div>
+							<button id="submit-month">Start Next Month</button></div>
+						<div id="status-information">
+							<p>Money:</p><h2 id="current-money">$0</h2>
+							<p>Inventory:</p><h3 id="inventory"></h3>
+							<p>Hired Workers:</p><h3 id="num-workers">None</h3>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+
+		</main>
+
+</body>
+
+</html>
