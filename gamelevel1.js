@@ -4,6 +4,71 @@ var dom = {};
 var numClicks = 0;
 var boardSize = 500;
 
+// Mining Tools
+var tools = [
+	{
+		"name": "Pan",
+		"description": "Place river gravel into a shallow pan then add water. Swirl the pan around until the gravel spills over the side and the gold dust is sitting at the bottom just waiting for you!",
+		"img": "img/tools/pan.jpg",
+		"depth": "0-5m",
+		"profit": "$25",
+		"price": "free",
+		"available": "01/1847",
+		"locations": "rivers"
+	},
+	{
+		"name": "Rocker",
+		"description": "Dump dirt and rock at the top of your Rocker and just rock that baby back and forth until you see gold at the bottom of the box.",
+		"img": "img/tools/rocker.jpg",
+		"depth": "0-5m",
+		"profit": "$40",
+		"price": "$50",
+		"available": "01/1848",
+		"locations": "anywhere"
+	},
+	{
+		"name": "Long Tom",
+		"description": "Dump your dirt, rocks, and gravel at the top of the Long Tom. Then watch those rocks fall 20 feet down to your cradle. Collect gold, rinse, repeat. You’re gonna need a couple extra hands for this big guy.",
+		"img": "img/tools/longtom.jpg",
+		"depth": "0-5m",
+		"profit": "$60",
+		"price": "$80",
+		"available": "01/1849",
+		"locations": "within 2 squares of a water source, on land or water"
+	},
+	{
+		"name": "Dredger",
+		"description": "Get your dredger and you can get all the way to the bottom of the river without your scuba gear. The dredger works best in deeper rivers.",
+		"img": "img/tools/dredger.jpg",
+		"depth": "0-30m",
+		"profit": "$100",
+		"price": "$130",
+		"available": "01/1850",
+		"locations": "rivers"
+	},
+	{
+		"name": "Hydraulic Mining",
+		"description": "Hold onto your hats because she’s gonna make a mess! You’ll need to have a lot of water on hand along with a hose. Just aim at anything on land and reap those golden rewards.",
+		"img": "img/tools/hydraulic.jpg",
+		"depth": "0-15m",
+		"profit": "$150",
+		"price": "$200",
+		"available": "01/1851",
+		"locations": "within 5 squares of a water source, but only on land"
+	},
+	{
+		"name": "Hardrock Miner",
+		"description": "This piece of equipment is every miner’s dream. Crush any piece of rock, dirt, or gravel and see what goodies lie inside.",
+		"img": "img/tools/hardrock.jpg",
+		"depth": "0-50m",
+		"profit": "$300",
+		"price": "$500",
+		"available": "01/1853",
+		"locations": "any land"
+	},
+
+]
+
 // Month/years
 var months = ["January", "February","March","April","May","June",
 							"July","August","September","October","November","December"]
@@ -54,6 +119,10 @@ Util.events(document, {
 
 		Util.one("#coordinates").focus();
 		Util.one("#inventory").innerHTML = "" + inventory[0];
+
+		populateStoreLegend();
+		setUpGeneralStore();
+		setUpPopups();
 
 		// EVENT: input listens for change in input (typing, copy/paste, etc)
 		var coordInput = Util.all(".coordinates");
@@ -130,8 +199,6 @@ Util.events(document, {
 			Util.one("#date").innerHTML = ""+months[monthCounter]+" "+yearCounter;
 		}
 
-		setUpGeneralStore();
-		setUpPopups();
 	},
 
 
@@ -145,6 +212,49 @@ Util.events(document, {
 
 	}
 });
+
+function populateStoreLegend() {
+	var legend = Util.one("#store-popup");
+	var listing = Util.one("#items-list");
+	tools.forEach((tool) => {
+		var name = document.createElement("div");
+		name.innerHTML = tool.name;
+		listing.appendChild(name);
+
+		var description = document.createElement("div");
+		description.innerHTML = tool.description;
+		listing.appendChild(description);
+
+		var depth = document.createElement("div");
+		depth.innerHTML = tool.depth;
+		listing.appendChild(depth);
+
+		var profit = document.createElement("div");
+		profit.innerHTML = tool.profit;
+		listing.appendChild(profit);
+
+		var price = document.createElement("div");
+		price.innerHTML = tool.price;
+		listing.appendChild(price);
+
+		var available = document.createElement("div");
+		available.innerHTML = tool.available;
+		listing.appendChild(available);
+
+		var locations = document.createElement("div");
+		locations.innerHTML = tool.locations;
+		listing.appendChild(locations);
+
+		var imageDiv = document.createElement("div");
+		var img = document.createElement("img");
+		img.src = tool.img;
+		img.style.width = "100px";
+		imageDiv.appendChild(img);
+		listing.appendChild(imageDiv);
+
+	})
+}
+
 
 function setUpGeneralStore() {
 		// Button - buying mining tools
@@ -214,7 +324,7 @@ function setUpPopups() {
 	}
 
     window.onclick = function(event) {
-    	console.log(event)
+    	// console.log(event)
       var mapPopup = Util.one("#map-popup");
       if (event.target == mapPopup) {
         mapPopup.style.display = "none";

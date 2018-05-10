@@ -59,10 +59,31 @@ button:disabled {
 	/*overflow-y: scroll;*/
 }
 
+#store-popup {
+	margin: 0;
+	top: 0px;
+}
+
+#store-popup div.popup-content {
+	padding: 10px;
+	margin-top: 0;
+}
 
 #items-list {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 1fr 4fr 1fr 0.5fr 0.5fr 1fr 1.5fr 2fr;
+	border: 1px solid black;
+}
+
+.items-header {
+	font-weight: bold;
+	color: navy;
+}
+
+#items-list div {
+	border: 0.5px dashed silver;
+	margin: 0;
+	padding: 5px;
 }
 
 .text-input {
