@@ -93,15 +93,15 @@ var goldPanCoordinates = {
 };
 
 var goldMineCoordinates = {
-	"a1": 5,
-	"b1": 5,
-	"c2": 30,
-	"d4": 5,
-	"f2": 2,
-	"g1": 2,
-	"g2": 20,
-	"g3": 10,
-	"h3": 10,
+	"a1": [5,12],
+	"b1": [5,12],
+	"c2": [30,12],
+	"d4": [5,12],
+	"f2": [2,12],
+	"g1": [2,12],
+	"g2": [20,12],
+	"g3": [10,12],
+	"h3": [10,12],
 };
 
 // ================================================
@@ -147,6 +147,7 @@ Util.events(document, {
 		// EVENT: Completes all actions for the current month
 		//				Calculates earnings, subtracts spendings, moves forward 1 month
 		Util.one("#submit-month").onclick = function() {
+			display(".hint",false); // turn off previous hints
 			var earnings = []; // keep track of [location, action, money] to display later
 
 			// find location/action for you and each hired worker (if any), calulate earnings
@@ -356,17 +357,32 @@ function calculateEarnings(location, actionType) {
 	// pick the map to use
 	if (actionType == "pan") {
 		mapToUse = goldPanCoordinates;
+		// check how much gold is in that location
+		if (location in mapToUse) {
+			earnings = mapToUse[location];
+		}
+		else {
+			earnings = 0;
+		}
 	}
 	else if (actionType == "mine") {
 		mapToUse = goldMineCoordinates;
-	}
-
-	// check how much gold is in that location
-	if (location in mapToUse) {
-		earnings = mapToUse[location];
-	}
-	else {
-		earnings = 0;
+		if (location in mapToUse) {
+			// check if the location is "dried up" - user can only dig 12 times total
+			var usesLeft = mapToUse[location][1];
+			if (usesLeft > 0){
+				earnings = mapToUse[location][0];
+				mapToUse[location][1] = mapToUse[location][1]-1; // decrease the "dry-up" counter
+				console.log(mapToUse[location]);
+			}
+			else {
+				display("#hint-dry", true); // display hint about drying up
+				earnings = 1;
+			}
+		}
+		else {
+			earnings = 0;
+		}
 	}
 
 	return earnings;
