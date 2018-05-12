@@ -79,6 +79,7 @@ var yearCounter = 1848;
 var money = 0;
 var inventory = ["Gold Pan"];
 var numWorkers = 0;
+var workerTimer = 0;
 var lastMonthLog = [];
 var goldPanCoordinates = {
 	"b2": 1,
@@ -124,7 +125,7 @@ Util.events(document, {
 		setUpGeneralStore();
 		setUpPopups();
 
-		Util.one("#storyboard-popup").style.display = "block";
+		//Util.one("#storyboard-popup").style.display = "block";
 
 		// EVENT: input listens for change in input (typing, copy/paste, etc)
 		var coordInput = Util.all(".coordinates");
@@ -183,16 +184,22 @@ Util.events(document, {
 			var coordInput = Util.all(".coordinates");
 			Util.one("#coordinates").focus();
 
-			// reset number of workers hired
-			numWorkers = 0;
-			var hiredWorkers = Util.all(".worker-actions");
-			while(hiredWorkers.length > 0) {
-				// removing location/action selectors of the hired workers
-				hiredWorkers[0].parentNode.removeChild(hiredWorkers[0]);
-				hiredWorkers = Util.all(".worker-actions");
+			// check if workers are done (finished 12 months)
+			// if so, reset number of workers hired. else decrement timer
+			if (workerTimer <= 0){
+				numWorkers = 0;
+				var hiredWorkers = Util.all(".worker-actions");
+				while(hiredWorkers.length > 0) {
+					// removing location/action selectors of the hired workers
+					hiredWorkers[0].parentNode.removeChild(hiredWorkers[0]);
+					hiredWorkers = Util.all(".worker-actions");
+				}
+				Util.one("#num-workers").innerHTML = "0";
+				Util.one("#buy-worker").disabled = false;
 			}
-			Util.one("#num-workers").innerHTML = "0";
-
+			else {
+				workerTimer -= 1;
+			}
 			// increase time 1 month forward
 			if (monthCounter==11) { // aka December
 				yearCounter += 1;
@@ -288,10 +295,11 @@ function setUpGeneralStore() {
 	// Button - hire a worker
 	// adds a new location/action selector for each worker hired
 	Util.one("#buy-worker").onclick = function() {
-		if (money >= 25){
+		if (money >= 50){
 			// hire worker, update page
-			money -= 25;
+			money -= 50;
 			numWorkers += 1;
+			workerTimer = 12; // workers stay for 12 months
 			Util.one("#num-workers").innerHTML = ""+numWorkers;
 			Util.one("#current-money").innerHTML="$"+money;
 
@@ -301,6 +309,9 @@ function setUpGeneralStore() {
 			selection.classList.add("worker-actions");
 			selection.querySelector(".location").children[0].innerHTML = "Worker Location:";
 			outerDiv.append(selection);
+
+			this.disabled = true; // for now, only hire 1 worker at a time
+			// TODO implement hiring multiple workers correctly
 		}
 
 	}
