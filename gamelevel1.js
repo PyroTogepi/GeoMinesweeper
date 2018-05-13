@@ -213,6 +213,7 @@ Util.events(document, {
 			if (yearCounter == 1848) {
 				Util.one("#rocker-text").hidden = false;
 				Util.one("#buy-mine").hidden = false;
+				Util.one("#mine-option").hidden = false;
 			}
 		}
 
