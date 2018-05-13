@@ -80,28 +80,32 @@ var money = 0;
 var inventory = ["Gold Pan"];
 var numWorkers = 0;
 var workerTimer = 0;
+var miningUnlocked = false;
+var c2timer = 5;
+var g2timer = 5;
 var lastMonthLog = [];
 var goldPanCoordinates = {
-	"b2": 1,
-	"b3": 2,
-	"b5": 4,
-	"c5": 1,
-	"f3": 1,
-	"g5": 7,
-	"h1": 3,
-	"h2": 3,
+	"B1": 3,
+	"B2": 1,
+	"B3": 2,
+	"B5": 4,
+	"C5": 1,
+	"F3": 1,
+	"G5": 7,
+	"H1": 3,
+	"H2": 3,
 };
 
 var goldMineCoordinates = {
-	"a1": [5,12],
-	"b1": [5,12],
-	"c2": [30,12],
-	"d4": [5,12],
-	"f2": [2,12],
-	"g1": [2,12],
-	"g2": [20,12],
-	"g3": [10,12],
-	"h3": [10,12],
+	"A1": [5,12],
+	"B1": [5,12],
+	"C2": [30,12],
+	"D4": [5,12],
+	"F2": [2,12],
+	"G1": [2,12],
+	"G2": [20,12],
+	"G3": [10,12],
+	"H3": [10,12],
 };
 
 // ================================================
@@ -137,9 +141,16 @@ Util.events(document, {
 				var pattern = new RegExp(this.pattern);
 				if (pattern.test(currentInput)){
 				    this.setAttribute("style","outline-color: green;"); // green outline (as opposed to red)
+						display("#hint-valid-coord", false);
+						// show a hint if the user is trying to pan in a non-river square
 				}
 				else {
 				    this.setAttribute("style","outline-color: red;"); // red outline (as opposed to none)
+						// show a hint if the input is incorrect (but not if user may bein the middle of typing it)
+						if (currentInput.length >= 2) {
+							display("#hint-valid-coord", true);
+						}
+						else { display("#hint-valid-coord", false); }
 				}
 			});
 		}
@@ -147,13 +158,17 @@ Util.events(document, {
 		// EVENT: Completes all actions for the current month
 		//				Calculates earnings, subtracts spendings, moves forward 1 month
 		Util.one("#submit-month").onclick = function() {
-			display(".hint",false); // turn off previous hints
+			// turn off previous hints
+			var allHintDivs = Util.all(".hint");
+			for (i of allHintDivs) {
+				i.style.display = "none";
+			}
 			var earnings = []; // keep track of [location, action, money] to display later
 
 			// find location/action for you and each hired worker (if any), calulate earnings
 			var allWorkers = Util.all(".location-action");
 			for (i of allWorkers) {
-				var location = i.querySelector(".location").querySelector(".coordinates").value.toLowerCase();
+				var location = i.querySelector(".location").querySelector(".coordinates").value.toUpperCase();
 				var actionType;
 				var actionDiv = i.querySelector(".action");
 				if (actionDiv.querySelector(".action-pan").checked == true) {
@@ -170,7 +185,7 @@ Util.events(document, {
 			lastMonth = earnings;
 
 			// display new money amount
-			console.log("You earned: $" + money);
+			console.log("Current money: $" + money);
 			Util.one("#current-money").innerHTML = "$" + money;
 			// display the last month log (breakdown of location/action/profit)
 			var lastMonthDiv = Util.one("#last-month");
@@ -214,6 +229,25 @@ Util.events(document, {
 				Util.one("#rocker-text").hidden = false;
 				Util.one("#buy-mine").hidden = false;
 				Util.one("#mine-option").hidden = false;
+			}
+
+			// check if player bought mining tool
+			// if so, decrement timer for hint block
+			// remove timer (set to below 0) if player dug in hint spot
+			if (miningUnlocked && (c2timer >= 0 || g2timer >= 0) ) {
+				if (location == "c2") { c2timer = -1; }
+				else { c2timer = c2timer - 1; }
+				if (location == "g2") { g2timer = -1; }
+				else { g2timer = g2timer - 1;	}
+
+				if (c2timer == 0) {
+					display("#hint-faultlines", true);
+					c2timer = 5;
+				}
+				if (g2timer == 0) {
+					display("#hint-desert", true);
+					g2timer = 5;
+				}
 			}
 		}
 
@@ -297,6 +331,9 @@ function setUpGeneralStore() {
 
 			// disable buy mining tools button
 			this.disabled = true;
+			// miningUnlocked is true - start timer for hint blocks (see Submit button code)
+			miningUnlocked = true;
+
 		}
 
 	}
@@ -381,7 +418,6 @@ function calculateEarnings(location, actionType) {
 			if (usesLeft > 0){
 				earnings = mapToUse[location][0];
 				mapToUse[location][1] = mapToUse[location][1]-1; // decrease the "dry-up" counter
-				console.log(mapToUse[location]);
 			}
 			else {
 				display("#hint-dry", true); // display hint about drying up
