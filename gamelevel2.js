@@ -73,14 +73,16 @@ var tools = [
 var months = ["January", "February","March","April","May","June",
 							"July","August","September","October","November","December"]
 var monthCounter=0;
-var yearCounter = 1847;
+var yearCounter = 1849;
 
 // Variables that are used in the game
 var money = 0;
-var inventory = ["Gold Pan"];
+var inventory = ["Gold Rocker"];
 var numWorkers = 0;
 var workerTimer = 0;
 var miningUnlocked = false;
+var nextTools = [("Long Tom", 80), ("Dredger",130)];
+var nextToolIndex = 0;
 var c2timer = 5;
 var g2timer = 5;
 var lastMonthLog = [];
@@ -95,7 +97,7 @@ var goldPanCoordinates = {
 	"H1": 3,
 	"H2": 3,
 };
-
+// gold mine spots -- [amount, dry-up timer]
 var goldMineCoordinates = {
 	"A1": [5,12],
 	"B1": [5,12],
@@ -171,11 +173,14 @@ Util.events(document, {
 				var location = i.querySelector(".location").querySelector(".coordinates").value.toUpperCase();
 				var actionType;
 				var actionDiv = i.querySelector(".action");
-				if (actionDiv.querySelector(".action-pan").checked == true) {
-					actionType = "pan";
+				if (actionDiv.querySelector(".action-rocker").checked == true) {
+					actionType = "rocker";
 				}
-				else if (actionDiv.querySelector(".action-mine").checked == true) {
-					actionType = "mine";
+				else if (actionDiv.querySelector(".action-long-tom").checked == true) {
+					actionType = "long_tom";
+				}
+				else if (actionDiv.querySelector(".action-dredger").checked == true) {
+					actionType = "dredger";
 				}
 				var profit = calculateEarnings(location, actionType)
 				money += profit;
@@ -225,10 +230,10 @@ Util.events(document, {
 
 			// check if it's the right date for new tool
 			// Jan 1848 -- add rocker tool
-			if (yearCounter == 1848) {
-				Util.one("#rocker-text").hidden = false;
-				Util.one("#buy-mine").hidden = false;
-				Util.one("#mine-option").hidden = false;
+			if (yearCounter == 1849) {
+				Util.one("#next-tool-text").hidden = false;
+				Util.one("#buy-tool").hidden = false;
+				//Util.one("#mine-option").hidden = false;
 			}
 
 			// check if player bought mining tool
@@ -310,11 +315,13 @@ function populateStoreLegend() {
 
 function setUpGeneralStore() {
 		// Button - buying mining tools
-	Util.one("#buy-mine").onclick = function() {
-		if (money >= 50 && inventory.indexOf("Rocker (Mining Tool)") < 0){
+	Util.one("#buy-tool").onclick = function() {
+		// check if enough money for tool and not in inventory yet
+		var toolName, toolPrice = nextTool[index];
+		if (money >= toolPrice && inventory.indexOf(toolName) < 0){
 			// buy the tools, add to inventory
 			money -= 50;
-			inventory.push("Rocker (Mining Tool)");
+			inventory.push(toolName);
 			// refresh inventory text
 			var inventoryContents = "";
 			for (var i = 0; i < inventory.length; i++) {
@@ -324,9 +331,19 @@ function setUpGeneralStore() {
 			Util.one("#current-money").innerHTML="$"+money;
 
 			// enable all "Mine for Gold" options
-			var mineOptions = Util.all(".action-mine");
-			for (i of mineOptions) {
-				i.disabled = false;
+			if (toolName == "Long Tom") {
+				var mineOptions = Util.all(".action-long-tom");
+				for (i of mineOptions) {
+					i.disabled = false;
+				}
+				// set Next Tool
+				nextToolIndex = nextToolIndex + 1;
+			}
+			else if (toolName == "Dredger") {
+				var mineOptions = Util.all(".action-dredger");
+				for (i of mineOptions) {
+					i.disabled = false;
+				}
 			}
 
 			// disable buy mining tools button
@@ -338,6 +355,7 @@ function setUpGeneralStore() {
 
 	}
 
+// TODO adjust worker prices depending on tool
 	// Button - hire a worker
 	// adds a new location/action selector for each worker hired
 	Util.one("#buy-worker").onclick = function() {
@@ -398,9 +416,9 @@ function setUpPopups() {
 function calculateEarnings(location, actionType) {
 	var mapToUse = goldPanCoordinates;
 	var earnings = 0;
-
+	// TODO adjust for new tools
 	// pick the map to use
-	if (actionType == "pan") {
+	if (actionType == "rocker") {
 		mapToUse = goldPanCoordinates;
 		// check how much gold is in that location
 		if (location in mapToUse) {
@@ -410,7 +428,7 @@ function calculateEarnings(location, actionType) {
 			earnings = 0;
 		}
 	}
-	else if (actionType == "mine") {
+	else if (actionType == "long-tom") {
 		mapToUse = goldMineCoordinates;
 		if (location in mapToUse) {
 			// check if the location is "dried up" - user can only dig 12 times total
@@ -428,6 +446,23 @@ function calculateEarnings(location, actionType) {
 			earnings = 0;
 		}
 	}
-
+	else if (actionType == "dredger") {
+		mapToUse = goldMineCoordinates;
+		if (location in mapToUse) {
+			// check if the location is "dried up" - user can only dig 12 times total
+			var usesLeft = mapToUse[location][1];
+			if (usesLeft > 0){
+				earnings = mapToUse[location][0];
+				mapToUse[location][1] = mapToUse[location][1]-1; // decrease the "dry-up" counter
+			}
+			else {
+				display("#hint-dry", true); // display hint about drying up
+				earnings = 1;
+			}
+		}
+		else {
+			earnings = 0;
+		}
+	}
 	return earnings;
 }

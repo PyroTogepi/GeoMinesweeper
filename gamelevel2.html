@@ -17,7 +17,7 @@
 
 	<script src="util.js"></script>
 	<script src="game.js"></script>
-	<script src="gamelevel1.js"></script>
+	<script src="gamelevel2.js"></script>
 
 </head>
 
@@ -51,7 +51,7 @@
 					<h2 class="section-header">Current Status</h2>
 					<div id="next-month-content">
 						<div id="status-time">
-							<h2 id="date">January 1847</h2>
+							<h2 id="date">January 1849</h2>
 							<p>Last Month:</p><div id="last-month"></div>
 							<button id="submit-month">Start Next Month</button></div>
 						<div id="status-information">
@@ -70,11 +70,11 @@
 					<h2 class="section-header">General Store</h2>
 					<div id="purchase-list">
 						<h2>Prices:</h2>
-						<p id="rocker-text" hidden>NEW! Rocker Mining Tool: $50, permanent purchase</p>
+						<p id="next-tool-text" hidden>NEW! Long Tom Mining Tool: $80, permanent purchase</p>
 						<p>1 worker: $50 per year (12 months)</p>
 					</div>
 					<button id="view-store-button">View Items</button>
-					<button id="buy-mine" hidden>Buy Tools</button>
+					<button id="buy-tool" hidden>Buy Tools</button>
 					<button id="buy-worker">Hire a worker</button>
 				</div>
 
@@ -92,12 +92,12 @@
 						<div class="action">
 							<h3>Action:</h3>
 							<form>
-								<div id="pan-option"><input type="radio" name="option" class="action-pan" checked>Pan for Gold (River)<br></div>
-								<div id="mine-option" hidden> <input type="radio" name="option" class="action-mine" disabled>Mine for Gold (Rock)<br></div>
+								<div id="rocker-option"><input type="radio" name="option" class="action-rocker" checked>Use Rocker for Gold (anywhere)<br></div>
+								<div id="long-tom-option" hidden> <input type="radio" name="option" class="action-long-tom" disabled>Use Long Tom for Gold (Near Water)<br></div>
+								<div id="dredger-option" hidden> <input type="radio" name="option" class="action-dredger" disabled>Use Dredger for Gold (River)<br></div>
 							</form>
 						</div>
 					</div>
-					<div id="hint-pan" class="hint">Hint: Remember you can only use the pan in a river!</div>
 					<div id="hint-valid-coord" class="hint">Hint: Type in valid map coordinates in the form "A1" or "a1"</div>
 				</div>
 
