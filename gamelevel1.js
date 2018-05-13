@@ -73,7 +73,7 @@ var tools = [
 var months = ["January", "February","March","April","May","June",
 							"July","August","September","October","November","December"]
 var monthCounter=0;
-var yearCounter = 1848;
+var yearCounter = 1847;
 
 // Variables that are used in the game
 var money = 0;
@@ -207,6 +207,13 @@ Util.events(document, {
 			}
 			monthCounter = (monthCounter+1) % 12;
 			Util.one("#date").innerHTML = ""+months[monthCounter]+" "+yearCounter;
+
+			// check if it's the right date for new tool
+			// Jan 1848 -- add rocker tool
+			if (yearCounter == 1848) {
+				Util.one("#rocker-text").hidden = false;
+				Util.one("#buy-mine").hidden = false;
+			}
 		}
 
 	},
@@ -269,10 +276,10 @@ function populateStoreLegend() {
 function setUpGeneralStore() {
 		// Button - buying mining tools
 	Util.one("#buy-mine").onclick = function() {
-		if (money >= 50 && inventory.indexOf("Rock Mining Tools") < 0){
+		if (money >= 50 && inventory.indexOf("Rocker (Mining Tool)") < 0){
 			// buy the tools, add to inventory
 			money -= 50;
-			inventory.push("Rock Mining Tools");
+			inventory.push("Rocker (Mining Tools)");
 			// refresh inventory text
 			var inventoryContents = "";
 			for (var i = 0; i < inventory.length; i++) {
