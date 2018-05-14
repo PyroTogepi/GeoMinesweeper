@@ -10,14 +10,37 @@
 
 	<!-- Load style sheets -->
 	<link rel="stylesheet" href="game.css">
-	<link rel="stylesheet" href="gamelevel1.css">
+	<style type="text/css">
+		.page-wrapper {
+			grid-template-columns: 1fr 3fr;
+		}
+
+		#boardDiv {
+			width: auto;
+		}
+
+		#map {
+			position: absolute;
+			top: 10px;
+			left: 400px;
+		}
+
+		.map-region {
+			position: absolute;
+		}
+
+		.map-region:hover {
+			filter: saturate(3);
+		}
+
+	</style>
 
 	<!-- Constructible EventTarget polyfill — Only Chrome 64+ supports constructible EventTarget objects natively -->
 	<script src="https://unpkg.com/event-target@latest/min.js"></script>
 
 	<script src="util.js"></script>
 	<script src="game.js"></script>
-	<script src="gamelevel1.js"></script>
+	<script src="main.js"></script>
 
 </head>
 
@@ -25,37 +48,42 @@
 	<div class="page-wrapper">
 		<side class="ui-head">
 			<a href="index.html"><h1>Geology Minesweeper</h1></a>
-			<!-- <h2>Level 4</h2> -->
 			<div id="instructions">
 				<p>You inherited this plot of land from your father. Will you find enough gold to make your fortune?
 				</p>
+				<h2>Choose a Level</h2>
+				<button>Level 1</button>
+				<button>Level 2</button>
+				<button>Level 3</button>
+				<button>Level 4</button>
 			</div>
-			<div class="board" id="boardDiv">
-				<img src="img/tcolormap.png" style="width: 500px">
-			</div>
+			
+
 		</side>
 
 		<main class="ui-board">
-			<div class="questions">
-				<div id="next-month" class="question">
-					<h2 class="section-header">Current Status</h2>
-					<div id="next-month-content">
-						<div id="status-time">				
-							<h2 id="date">January 1848</h2>	
-							<p>Last Month:</p><div id="last-month"></div>
-							<button id="submit-month">Start Next Month</button></div>
-						<div id="status-information">
-							<p>Money:</p><h2 id="current-money">$0</h2>
-							<p>Inventory:</p><h3 id="inventory"></h3>
-							<p>Hired Workers:</p><h3 id="num-workers">None</h3>
-						</div>
-					</div>
+			<div class="board" id="boardDiv">
+			
+				<div id="map">
+					<img id="main-map" src="img/main-map.jpg" style="width:600px">
+					<img class="map-region" id="map-1" src="img/main1.png" style="top:215px; width:150px; left:239px">
+					<img class="map-region" id="map-2" src="img/main2.png" style="top: 325px; width: 138px; left: 292px;">
+					<img class="map-region" id="map-3" src="img/main3.png" style="top: 376px; width: 206px; left: 307px;">
+					<img class="map-region" id="map-4" src="img/main4.png" style="top: 440px; width: 167px; left: 265px;">
 				</div>
-
 			</div>
 
-
 		</main>
+
+		<div id="story-popup" class="popup">
+		  <div class="popup-content">
+		    <span id="story-popup-close" class="close">&times;</span>
+		  	hello
+		  	<button>Next -></button>
+		  </div>
+		</div>
+
+
 
 </body>
 
