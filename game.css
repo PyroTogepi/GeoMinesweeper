@@ -29,7 +29,7 @@ body {
 	display: grid;
 	grid-gap: 10px;
 	grid-template-columns: 1fr 2fr;
-	grid-template-areas: 
+	grid-template-areas:
 	"header board";
 }
 
@@ -68,7 +68,7 @@ side {
 
 /* BOARD STYLES */
 main {
-	margin: auto;
+	margin: 10px auto;
 	/*padding: 5px;*/
 	text-align: center;
 	width: auto;

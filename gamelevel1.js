@@ -11,7 +11,7 @@ var tools = [
 		"description": "Place river gravel into a shallow pan then add water. Swirl the pan around until the gravel spills over the side and the gold dust is sitting at the bottom just waiting for you!",
 		"img": "img/tools/pan.jpg",
 		"depth": "0-5m",
-		"profit": "$25",
+		"profit": "$20",
 		"price": "free",
 		"available": "01/1847",
 		"locations": "rivers"
@@ -22,7 +22,7 @@ var tools = [
 		"img": "img/tools/rocker.jpg",
 		"depth": "0-5m",
 		"profit": "$40",
-		"price": "$50",
+		"price": "$200",
 		"available": "01/1848",
 		"locations": "anywhere"
 	},
@@ -32,7 +32,7 @@ var tools = [
 		"img": "img/tools/longtom.jpg",
 		"depth": "0-5m",
 		"profit": "$60",
-		"price": "$80",
+		"price": "$300",
 		"available": "01/1849",
 		"locations": "within 2 squares of a water source, on land or water"
 	},
@@ -42,7 +42,7 @@ var tools = [
 		"img": "img/tools/dredger.jpg",
 		"depth": "0-30m",
 		"profit": "$100",
-		"price": "$130",
+		"price": "$350",
 		"available": "01/1850",
 		"locations": "rivers"
 	},
@@ -52,7 +52,7 @@ var tools = [
 		"img": "img/tools/hydraulic.jpg",
 		"depth": "0-15m",
 		"profit": "$150",
-		"price": "$200",
+		"price": "$500",
 		"available": "01/1851",
 		"locations": "within 5 squares of a water source, but only on land"
 	},
@@ -62,7 +62,7 @@ var tools = [
 		"img": "img/tools/hardrock.jpg",
 		"depth": "0-50m",
 		"profit": "$300",
-		"price": "$500",
+		"price": "$1000",
 		"available": "01/1853",
 		"locations": "any land"
 	},
@@ -79,7 +79,7 @@ var yearCounter = 1847;
 var money = 0;
 var inventory = ["Gold Pan"];
 var numWorkers = 0;
-var workerTimer = 0;
+var workerTimer = -1;
 var miningUnlocked = false;
 var c2timer = 5;
 var g2timer = 5;
@@ -159,17 +159,29 @@ Util.events(document, {
 		// EVENT: Completes all actions for the current month
 		//				Calculates earnings, subtracts spendings, moves forward 1 month
 		Util.one("#submit-month").onclick = function() {
+			// if player has enough money to progress, display Return To Map button
+			if (money >= 300 && Util.one("#return-to-map").hidden == true) {
+				Util.one("#return-to-map").hidden = false;
+				// add congratulations text
+				var line = document.createElement("p");
+				line.innerHTML = "You've made enough money to buy a new plot of land! " +
+				"Perhaps you can find even greater riches there... " +
+				"Return to map to select a new plot.";
+				Util.one("#instructions").append(line);
+			}
+
 			// turn off previous hints
 			var allHintDivs = Util.all(".hint");
 			for (i of allHintDivs) {
 				i.style.display = "none";
 			}
 			var earnings = []; // keep track of [location, action, money] to display later
-
+			var allLocations = [];
 			// find location/action for you and each hired worker (if any), calulate earnings
 			var allWorkers = Util.all(".location-action");
 			for (i of allWorkers) {
 				var location = i.querySelector(".location").querySelector(".coordinates").value.toUpperCase();
+				allLocations.push(location);
 				var actionType;
 				var actionDiv = i.querySelector(".action");
 				if (actionDiv.querySelector(".action-pan").checked == true) {
@@ -236,15 +248,18 @@ Util.events(document, {
 				Util.one("#rocker-text").hidden = false;
 				Util.one("#buy-mine").hidden = false;
 				Util.one("#mine-option").hidden = false;
+				if (inventory.indexOf("Rocker (Mining Tool)") < 0) {
+					display("#hint-new-tool", true);
+				}
 			}
 
 			// check if player bought mining tool
 			// if so, decrement timer for hint block
 			// remove timer (set to below 0) if player dug in hint spot
 			if (miningUnlocked && (c2timer >= 0 || g2timer >= 0) ) {
-				if (location == "C2") { c2timer = -1; }
+				if (allLocations.indexOf("C2") >= 0) { c2timer = -1; }
 				else { c2timer = c2timer - 1; }
-				if (location == "G2") { g2timer = -1; }
+				if (allLocations.indexOf("G2") >= 0) { g2timer = -1; }
 				else { g2timer = g2timer - 1;	}
 
 				if (c2timer == 0) {
@@ -321,6 +336,7 @@ function setUpGeneralStore() {
 		if (money >= 50 && inventory.indexOf("Rocker (Mining Tool)") < 0){
 			// buy the tools, add to inventory
 			money -= 50;
+			display("#hint-new-tool", false);
 			inventory.push("Rocker (Mining Tool)");
 			// refresh inventory text
 			var inventoryContents = "";
