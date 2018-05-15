@@ -79,7 +79,7 @@ var yearCounter = 1847;
 var money = 0;
 var inventory = ["Gold Pan"];
 var numWorkers = 0;
-var workerTimer = 0;
+var workerTimer = -1;
 var miningUnlocked = false;
 var c2timer = 5;
 var g2timer = 5;
@@ -176,11 +176,12 @@ Util.events(document, {
 				i.style.display = "none";
 			}
 			var earnings = []; // keep track of [location, action, money] to display later
-
+			var allLocations = [];
 			// find location/action for you and each hired worker (if any), calulate earnings
 			var allWorkers = Util.all(".location-action");
 			for (i of allWorkers) {
 				var location = i.querySelector(".location").querySelector(".coordinates").value.toUpperCase();
+				allLocations.push(location);
 				var actionType;
 				var actionDiv = i.querySelector(".action");
 				if (actionDiv.querySelector(".action-pan").checked == true) {
@@ -247,15 +248,18 @@ Util.events(document, {
 				Util.one("#rocker-text").hidden = false;
 				Util.one("#buy-mine").hidden = false;
 				Util.one("#mine-option").hidden = false;
+				if (inventory.indexOf("Rocker (Mining Tool)") < 0) {
+					display("#hint-new-tool", true);
+				}
 			}
 
 			// check if player bought mining tool
 			// if so, decrement timer for hint block
 			// remove timer (set to below 0) if player dug in hint spot
 			if (miningUnlocked && (c2timer >= 0 || g2timer >= 0) ) {
-				if (location == "C2") { c2timer = -1; }
+				if (allLocations.indexOf("C2") >= 0) { c2timer = -1; }
 				else { c2timer = c2timer - 1; }
-				if (location == "G2") { g2timer = -1; }
+				if (allLocations.indexOf("G2") >= 0) { g2timer = -1; }
 				else { g2timer = g2timer - 1;	}
 
 				if (c2timer == 0) {
@@ -332,6 +336,7 @@ function setUpGeneralStore() {
 		if (money >= 50 && inventory.indexOf("Rocker (Mining Tool)") < 0){
 			// buy the tools, add to inventory
 			money -= 50;
+			display("#hint-new-tool", false);
 			inventory.push("Rocker (Mining Tool)");
 			// refresh inventory text
 			var inventoryContents = "";

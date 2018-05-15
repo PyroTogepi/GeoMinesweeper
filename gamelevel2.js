@@ -79,7 +79,8 @@ var yearCounter = 1849;
 var money = 0;
 var inventory = ["Gold Rocker"];
 var numWorkers = 0;
-var workerTimer = 0;
+var workerTimer = -1;
+var workerPrices = [45, 45, 70];
 //var miningUnlocked = false; // the hint timer
 var heatMapUnlocked = false;
 var nextTools = [["Long Tom", 300], ["Dredger",350]];
@@ -99,34 +100,34 @@ var goldRockerCoordinates = {
 };
 
 var goldHeatMapCoordinates = {
-	"A2": [2,'none'],
-	"A3": [1,'none'],
-	"A4": [4,'none'],
-	"A5": [1,'none'],
-	"B1": [5,'none'],
-	"B2": [1,'none'],
-	"B3": [1,'none'],
-	"B5": [2,'none'],
-	"C1": [1,'none'],
-	"C3": [4,'none'],
-	"C5": [1,'none'],
-	"D1": [2,'none'],
-	"D2": [4,'none'],
-	"D3": [2,'none'],
-	"D5": [2,'none'],
-	"E1": [1,'none'],
-	"E2": [10,'none'],
-	"E3": [3,'none'],
-	"F2": [3,'none'],
-	"F3": [1,'none'],
-	"G1": [2,'none'],
-	"G2": [1,'none'],
-	"G3": [2,'none'],
-	"G4": [10,'none'],
-	"G5": [1,'none'],
-	"H1": [10,'none'],
-	"H2": [1,'none'],
-	"H4": [17,'none'],
+	"A2": [2,12],
+	"A3": [1,12],
+	"A4": [4,12],
+	"A5": [1,12],
+	"B1": [5,12],
+	"B2": [1,12],
+	"B3": [1,12],
+	"B5": [2,12],
+	"C1": [1,12],
+	"C3": [4,12],
+	"C5": [1,12],
+	"D1": [2,12],
+	"D2": [4,12],
+	"D3": [2,12],
+	"D5": [2,12],
+	"E1": [1,12],
+	"E2": [10,12],
+	"E3": [3,12],
+	"F2": [3,12],
+	"F3": [1,12],
+	"G1": [2,12],
+	"G2": [1,12],
+	"G3": [2,12],
+	"G4": [10,12],
+	"G5": [1,12],
+	"H1": [10,12],
+	"H2": [1,12],
+	"H4": [17,12],
 }
 
 // ================================================
@@ -244,9 +245,12 @@ Util.events(document, {
 					// removing location/action selectors of the hired workers
 					hiredWorkers[0].parentNode.removeChild(hiredWorkers[0]);
 					hiredWorkers = Util.all(".worker-actions");
+					// show worker hint
+					display("#hint-worker", true);
 				}
 				Util.one("#num-workers").innerHTML = "0";
 				Util.one("#buy-worker").disabled = false;
+
 			}
 			else {
 				workerTimer -= 1;
@@ -264,12 +268,18 @@ Util.events(document, {
 				Util.one("#next-tool-text").hidden = false;
 				Util.one("#buy-tool").hidden = false;
 				Util.one("#long-tom-option").hidden = false;
+				if (inventory.indexOf("Long Tom") < 0) {
+					display("#hint-new-tool", true);
+				}
 			}
 			if (yearCounter >= 1850 && nextToolIndex == 1) {
 				Util.one("#next-tool-text").innerHTML = "NEW! Dredger Mining Tool: $350, permanent purchase";
 				Util.one("#buy-tool").hidden = false;
 				Util.one("#buy-tool").disabled = false;
 				Util.one("#dredger-option").hidden = false;
+				if (inventory.indexOf("Dredger") < 0) {
+					display("#hint-new-tool", true);
+				}
 			}
 
 			/*
@@ -399,9 +409,10 @@ function setUpGeneralStore() {
 	// Button - hire a worker
 	// adds a new location/action selector for each worker hired
 	Util.one("#buy-worker").onclick = function() {
-		if (money >= 50){
+		var workerSalary = workerPrices[nextToolIndex];
+		if (money >= workerSalary){
 			// hire worker, update page
-			money -= 50;
+			money -= workerSalary;
 			numWorkers += 1;
 			workerTimer = 12; // workers stay for 12 months
 			Util.one("#num-workers").innerHTML = ""+numWorkers;
@@ -468,33 +479,42 @@ function setUpPopups() {
 function calculateEarnings(location, actionType) {
 	var mapToUse = goldRockerCoordinates;
 	var earnings = 0;
-	// TODO adjust for new tools
 	// pick the map to use
 	if (actionType == "rocker") {
 		mapToUse = goldRockerCoordinates;
 		if (heatMapUnlocked == true) {
+			// use the new map values, doesn't dry up (TODO (?))
 			mapToUse = goldHeatMapCoordinates;
-		}
-		// check how much gold is in that location
-		if (location in mapToUse) {
-			// check if the location is "dried up" - user can only dig 12 times total
-			var usesLeft = mapToUse[location][1];
-			if (usesLeft == "none") {
+			// check how much gold is in that location
+			if (location in mapToUse) {
+				// rocker doesn't dry up
 				earnings = mapToUse[location][0];
-			}
-			else if (usesLeft > 0){
-				earnings = mapToUse[location][0];
-				mapToUse[location][1] = mapToUse[location][1]-1; // decrease the "dry-up" counter
 			}
 			else {
-				display("#hint-dry", true); // display hint about drying up
-				earnings = 1;
+				// not in map
+				earnings = 0;
 			}
 		}
 		else {
-			// not in map
-			earnings = 0;
+			// using initial map
+			if (location in mapToUse) {
+				// check if the location is "dried up" - user can only dig 12 times total
+				var usesLeft = mapToUse[location][1];
+				if (usesLeft > 0){
+					earnings = mapToUse[location][0];
+					mapToUse[location][1] = mapToUse[location][1]-1; // decrease the "dry-up" counter
+				}
+				else {
+					display("#hint-dry", true); // display hint about drying up
+					earnings = 1;
+				}
+			}
+			else {
+				// location NOT in map
+				earnings = 0;
+			}
 		}
+
 	}
 	else if (actionType == "long-tom") {
 		mapToUse = goldHeatMapCoordinates;
@@ -502,10 +522,7 @@ function calculateEarnings(location, actionType) {
 		if (location in mapToUse) {
 			// check if the location is "dried up" - user can only dig 12 times total
 			var usesLeft = mapToUse[location][1];
-			if (usesLeft == "none") {
-				earnings = mapToUse[location][0]*multiplier;
-			}
-			else if (usesLeft > 0){
+			if (usesLeft > 0){
 				earnings = mapToUse[location][0] * multiplier;
 				mapToUse[location][1] = mapToUse[location][1]-1; // decrease the "dry-up" counter
 			}
@@ -522,19 +539,8 @@ function calculateEarnings(location, actionType) {
 		mapToUse = goldHeatMapCoordinates;
 		var multiplier = 3;
 		if (location in mapToUse) {
-			// check if the location is "dried up" - user can only dig 12 times total
-			var usesLeft = mapToUse[location][1];
-			if (usesLeft == "none") {
-				earnings = mapToUse[location][0] * multiplier;
-			}
-			else if (usesLeft > 0){
-				earnings = mapToUse[location][0] * multiplier;
-				mapToUse[location][1] = mapToUse[location][1]-1; // decrease the "dry-up" counter
-			}
-			else {
-				display("#hint-dry", true); // display hint about drying up
-				earnings = 1;
-			}
+			// dredger doesn't dry up
+			earnings = mapToUse[location][0] * multiplier;
 		}
 		else {
 			earnings = 0;
