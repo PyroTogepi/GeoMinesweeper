@@ -159,6 +159,17 @@ Util.events(document, {
 		// EVENT: Completes all actions for the current month
 		//				Calculates earnings, subtracts spendings, moves forward 1 month
 		Util.one("#submit-month").onclick = function() {
+			// if player has enough money to progress, display Return To Map button
+			if (money >= 300 && Util.one("#return-to-map").hidden == true) {
+				Util.one("#return-to-map").hidden = false;
+				// add congratulations text
+				var line = document.createElement("p");
+				line.innerHTML = "You've made enough money to buy a new plot of land! " +
+				"Perhaps you can find even greater riches there... " +
+				"Return to map to select a new plot.";
+				Util.one("#instructions").append(line);
+			}
+
 			// turn off previous hints
 			var allHintDivs = Util.all(".hint");
 			for (i of allHintDivs) {
