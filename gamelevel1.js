@@ -84,6 +84,7 @@ var miningUnlocked = false;
 var c2timer = 5;
 var g2timer = 5;
 var lastMonthLog = [];
+var allMonthsLog = new Set();
 var goldPanCoordinates = {
 	"B1": 3,
 	"B2": 1,
@@ -195,6 +196,10 @@ Util.events(document, {
 				var line = document.createElement("p");
 				line.innerHTML = "$" + i[2] + " from location " + i[0] + " using " + i[1];
 				lastMonthDiv.appendChild(line);
+				// keep track of all unique digs in allMonthsLog
+				if (!allMonthsLog.has("$" + i[2] + " from location " + i[0] + " using " + i[1])){
+					allMonthsLog.add("$" + i[2] + " from location " + i[0] + " using " + i[1]);
+				}
 			}
 			// reset location coordinate input, refocus
 			var coordInput = Util.all(".coordinates");
@@ -209,6 +214,8 @@ Util.events(document, {
 					// removing location/action selectors of the hired workers
 					hiredWorkers[0].parentNode.removeChild(hiredWorkers[0]);
 					hiredWorkers = Util.all(".worker-actions");
+					// show worker hint
+					display("#hint-worker", true);
 				}
 				Util.one("#num-workers").innerHTML = "0";
 				Util.one("#buy-worker").disabled = false;
@@ -235,9 +242,9 @@ Util.events(document, {
 			// if so, decrement timer for hint block
 			// remove timer (set to below 0) if player dug in hint spot
 			if (miningUnlocked && (c2timer >= 0 || g2timer >= 0) ) {
-				if (location == "c2") { c2timer = -1; }
+				if (location == "C2") { c2timer = -1; }
 				else { c2timer = c2timer - 1; }
-				if (location == "g2") { g2timer = -1; }
+				if (location == "G2") { g2timer = -1; }
 				else { g2timer = g2timer - 1;	}
 
 				if (c2timer == 0) {

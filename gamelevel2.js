@@ -86,28 +86,17 @@ var nextToolIndex = 0;
 var c2timer = 5;
 var g2timer = 5;
 var lastMonthLog = [];
-var goldPanCoordinates = {
-	"B1": 3,
-	"B2": 1,
-	"B3": 2,
-	"B5": 4,
-	"C5": 1,
-	"F3": 1,
-	"G5": 7,
-	"H1": 3,
-	"H2": 3,
-};
+
 // gold mine spots -- [amount, dry-up timer]
-var goldMineCoordinates = {
-	"A1": [5,12],
-	"B1": [5,12],
-	"C2": [30,12],
-	"D4": [5,12],
-	"F2": [2,12],
-	"G1": [2,12],
-	"G2": [20,12],
-	"G3": [10,12],
-	"H3": [10,12],
+var goldRockerCoordinates = {
+	"A2": [15,1],
+	"A4": [15,1],
+	"B2": [15,1],
+	"D2": [20,5],
+	"D4": [15,1],
+	"E2": [15,1],
+	"E5": [15,1],
+	"F5": [15,1],
 };
 
 // ================================================
@@ -236,6 +225,7 @@ Util.events(document, {
 				//Util.one("#mine-option").hidden = false;
 			}
 
+			/*
 			// check if player bought mining tool
 			// if so, decrement timer for hint block
 			// remove timer (set to below 0) if player dug in hint spot
@@ -253,7 +243,7 @@ Util.events(document, {
 					display("#hint-desert", true);
 					g2timer = 5;
 				}
-			}
+			}*/
 		}
 
 	},
@@ -379,6 +369,17 @@ function setUpGeneralStore() {
 		}
 
 	}
+	// Player can buy a heat map that displays underneath the baseic map
+	Util.one("#buy-map").onclick = function() {
+		var heatmap = Util.one("#heat-map");
+		if (money >= 50 && heatmap.hidden == true){
+			// update page
+			money -= 50;
+			Util.one("#current-money").innerHTML="$"+money;
+			heatmap.hidden = false;
+			this.disabled = true;
+		}
+	}
 }
 
 
@@ -414,22 +415,31 @@ function setUpPopups() {
 
 
 function calculateEarnings(location, actionType) {
-	var mapToUse = goldPanCoordinates;
+	var mapToUse = goldRockerCoordinates;
 	var earnings = 0;
 	// TODO adjust for new tools
 	// pick the map to use
 	if (actionType == "rocker") {
-		mapToUse = goldPanCoordinates;
+		mapToUse = goldRockerCoordinates;
 		// check how much gold is in that location
 		if (location in mapToUse) {
-			earnings = mapToUse[location];
+			// check if the location is "dried up" - user can only dig 12 times total
+			var usesLeft = mapToUse[location][1];
+			if (usesLeft > 0){
+				earnings = mapToUse[location][0];
+				mapToUse[location][1] = mapToUse[location][1]-1; // decrease the "dry-up" counter
+			}
+			else {
+				display("#hint-dry", true); // display hint about drying up
+				earnings = 1;
+			}
 		}
 		else {
 			earnings = 0;
 		}
 	}
 	else if (actionType == "long-tom") {
-		mapToUse = goldMineCoordinates;
+		mapToUse = goldRockerCoordinates;
 		if (location in mapToUse) {
 			// check if the location is "dried up" - user can only dig 12 times total
 			var usesLeft = mapToUse[location][1];
@@ -447,7 +457,7 @@ function calculateEarnings(location, actionType) {
 		}
 	}
 	else if (actionType == "dredger") {
-		mapToUse = goldMineCoordinates;
+		mapToUse = goldRockerCoordinates;
 		if (location in mapToUse) {
 			// check if the location is "dried up" - user can only dig 12 times total
 			var usesLeft = mapToUse[location][1];
