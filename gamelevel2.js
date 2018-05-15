@@ -80,7 +80,7 @@ var money = 0;
 var inventory = ["Gold Rocker"];
 var numWorkers = 0;
 var workerTimer = -1;
-var workerPrices = [45, 45, 70];
+var workerPrices = [45, 70];
 //var miningUnlocked = false; // the hint timer
 var heatMapUnlocked = false;
 var nextTools = [["Long Tom", 300], ["Dredger",350]];
@@ -388,6 +388,9 @@ function setUpGeneralStore() {
 				}
 				// set Next Tool
 				nextToolIndex = nextToolIndex + 1;
+				// update worker price
+				var workerSalary = workerPrices[nextToolIndex];
+				Util.one("#worker-salary-text").innerHTML = "1 worker: $" + workerSalary + " per year (12 months)";
 			}
 			else if (toolName == "Dredger") {
 				var mineOptions = Util.all(".action-dredger");
@@ -405,7 +408,6 @@ function setUpGeneralStore() {
 
 	}
 
-// TODO adjust worker prices depending on tool
 	// Button - hire a worker
 	// adds a new location/action selector for each worker hired
 	Util.one("#buy-worker").onclick = function() {
