@@ -18,6 +18,9 @@ Util.events(document, {
 			Util.one("#story-popup").style.display = "none";
 		}
 
+		Util.one("#view-story-btn").onclick = function() {
+			Util.one("#story-popup").style.display = "block";
+		}
 
 	},
 
