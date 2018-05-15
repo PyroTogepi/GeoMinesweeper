@@ -56,7 +56,7 @@ function checkQ2() {
 	numTriesQ2++;
 	var input = Util.one("#q2-input").value;
 	var msg = Util.one("#msg-q2");
-	if (input == 1440) {
+	if (input == 8) {
 		msg.style.color = "green";
 		msg.innerHTML = "Correct!";
 	} else {
@@ -70,29 +70,14 @@ function checkQ2() {
 }
 
 function checkQ3() {
-	numTriesQ3++;
 	var input = Util.one("#q3-input").value;
 	var msg = Util.one("#msg-q3");
-	if (input == 1540) {
+	if (input == "J7" || input == "K6" || input == "K7" || input == "L6" || input == "L7") {
 		msg.style.color = "green";
 		msg.innerHTML = "Correct!";
-	} else if (input <= 1560 && input >= 1520) {
-		msg.style.color = "red";
-		msg.innerHTML = "You’re close! Count again!";
 	} else {
 		msg.style.color = "red";
 		msg.innerHTML = "Try again!";
-		if (numTriesQ3 == 3) {
-			var hint = Util.one("#hint-q3");
-			hint.innerHTML = "Hint: Here is more information about how to count the heights.";
-
-			var img = document.createElement("img");
-			img.src = "img/topo1B.png";
-			img.style.width = "550px";
-			hint.appendChild(img);
-			display("#hint-q3", true);
-		}
-
 	}
 }
 
