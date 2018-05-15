@@ -11,7 +11,7 @@ var tools = [
 		"description": "Place river gravel into a shallow pan then add water. Swirl the pan around until the gravel spills over the side and the gold dust is sitting at the bottom just waiting for you!",
 		"img": "img/tools/pan.jpg",
 		"depth": "0-5m",
-		"profit": "$25",
+		"profit": "$20",
 		"price": "free",
 		"available": "01/1847",
 		"locations": "rivers"
@@ -22,7 +22,7 @@ var tools = [
 		"img": "img/tools/rocker.jpg",
 		"depth": "0-5m",
 		"profit": "$40",
-		"price": "$50",
+		"price": "$200",
 		"available": "01/1848",
 		"locations": "anywhere"
 	},
@@ -32,7 +32,7 @@ var tools = [
 		"img": "img/tools/longtom.jpg",
 		"depth": "0-5m",
 		"profit": "$60",
-		"price": "$80",
+		"price": "$300",
 		"available": "01/1849",
 		"locations": "within 2 squares of a water source, on land or water"
 	},
@@ -42,7 +42,7 @@ var tools = [
 		"img": "img/tools/dredger.jpg",
 		"depth": "0-30m",
 		"profit": "$100",
-		"price": "$130",
+		"price": "$350",
 		"available": "01/1850",
 		"locations": "rivers"
 	},
@@ -52,7 +52,7 @@ var tools = [
 		"img": "img/tools/hydraulic.jpg",
 		"depth": "0-15m",
 		"profit": "$150",
-		"price": "$200",
+		"price": "$500",
 		"available": "01/1851",
 		"locations": "within 5 squares of a water source, but only on land"
 	},
@@ -62,7 +62,7 @@ var tools = [
 		"img": "img/tools/hardrock.jpg",
 		"depth": "0-50m",
 		"profit": "$300",
-		"price": "$500",
+		"price": "$1000",
 		"available": "01/1853",
 		"locations": "any land"
 	},
