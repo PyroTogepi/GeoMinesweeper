@@ -13,16 +13,10 @@ Util.events(document, {
 	"DOMContentLoaded": function() {
 
 		Util.one("#story-popup").style.display = "block";
-		Util.one("#story-popup-close").onclick = function() {
+
+		Util.one("#continue-btn").onclick = function() {
 			Util.one("#story-popup").style.display = "none";
 		}
-
-		window.onclick = function(event) {
-		var popup = Util.one("#story-popup");
-		if (event.target == popup) {
-			popup.style.display = "none";
-		}
-    }
 
 
 	},
@@ -33,7 +27,7 @@ Util.events(document, {
 
 	// Click events arrive here
 	"click": function(evt) {
-		console.log(evt.target);
+		// console.log(evt.target);
 
 	}
 });
