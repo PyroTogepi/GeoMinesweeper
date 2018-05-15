@@ -27,13 +27,14 @@
 			<a href="index.html"><h1>Geology Minesweeper</h1></a>
 			<!-- <h2>Level 4</h2> -->
 			<div id="instructions">
-				<p>You inherited this plot of land from your father. Will you find enough gold to make your fortune?
+				<p>Your friend has worked in this land before, and said that there is gold at 250 meter elevation,
+					 and that he found gold at A5 and B5. The region has a lot of rivers.
+					 If you find them in this dry land, you might find more gold!
 				</p>
 			</div>
 			<div class="board" id="boardDiv">
-				<img src="img/tcolormapupdated.png" style="width: 500px">
-				<img src="img/topographicalgame.jpg" style="width: 500px">
-
+				<img src="img/level2map.png" style="width:700px">
+				<img src="img/heatmap.png" style="width:700px" id="heat-map" hidden>
 			</div>
 			<!-- <div id="hints"><b>Hints!</b></div> -->
 			<!-- <div id="resources" class="question">
@@ -74,7 +75,8 @@
 						<p>1 worker: $50 per year (12 months)</p>
 					</div>
 					<button id="view-store-button">View Items</button>
-					<button id="buy-tool" hidden>Buy Tools</button>
+					<button id="buy-map">Buy Map</button>
+					<button id="buy-tool" hidden>Buy New Tool</button>
 					<button id="buy-worker">Hire a worker</button>
 				</div>
 

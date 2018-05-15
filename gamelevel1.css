@@ -15,6 +15,7 @@ div {
 
 #boardDiv {
 	position: relative;
+	padding: 10px;
 }
 
 .section-header {
