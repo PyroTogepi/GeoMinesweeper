@@ -1,7 +1,7 @@
 # GeoMinesweeper
 Geology Minesweeper as a Digital Learning Game for 11.127/CMS.590
 
-MIT Design and Development of Games for Learning Spring 2018
+Design and Development of Games for Learning, Spring 2018
 
 Team members: Shavina Chau, Claudia Chen, Janice Chui, Mae Dotan, Alex Torres
 
